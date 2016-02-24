@@ -28,7 +28,7 @@ public class QInvoice extends EntityPathBase<Invoice> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final SetPath<Product, QProduct> products = this.<Product, QProduct>createSet("products", Product.class, QProduct.class, PathInits.DIRECT2);
+    public final SetPath<InvoiceDetail, QInvoiceDetail> invoiceDetails = this.<InvoiceDetail, QInvoiceDetail>createSet("invoiceDetails", InvoiceDetail.class, QInvoiceDetail.class, PathInits.DIRECT2);
 
     public final StringPath status = createString("status");
 

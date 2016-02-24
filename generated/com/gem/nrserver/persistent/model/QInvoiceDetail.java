@@ -24,8 +24,6 @@ public class QInvoiceDetail extends EntityPathBase<InvoiceDetail> {
 
     public final DateTimePath<java.util.Date> createdDate = createDateTime("createdDate", java.util.Date.class);
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
-
     public final QInvoice invoice;
 
     public final QProduct product;

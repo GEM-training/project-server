@@ -3,6 +3,7 @@ package com.gem.nrserver.persistent.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,12 +11,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "invoice_detail")
+@IdClass(InvoiceDetail.Id.class)
 public class InvoiceDetail {
-    @Id
-    @SequenceGenerator(name = "invoice_detail_id_seq", sequenceName = "invoice_detail_id_seq",  initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoice_detail_id_seq")
-    @Column(name = "id", nullable = false, unique = true)
-    private long id;
 
     @Column(name = "quantity")
     private int quantity;
@@ -26,12 +23,12 @@ public class InvoiceDetail {
     @Column(name = "updated_date")
     private Date updatedDate;
 
-    @JsonIgnore
+    @javax.persistence.Id
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @JsonIgnore
+    @javax.persistence.Id
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
@@ -62,14 +59,6 @@ public class InvoiceDetail {
         this.quantity = quantity;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
 
     public Product getProduct() {
         return product;
@@ -85,5 +74,30 @@ public class InvoiceDetail {
 
     public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
+    }
+
+    @Embeddable
+    public static class Id implements Serializable {
+        private Product product;
+        private Invoice invoice;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Id id = (Id) o;
+
+            if (!product.equals(id.product)) return false;
+            return invoice.equals(id.invoice);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = product.hashCode();
+            result = 31 * result + invoice.hashCode();
+            return result;
+        }
     }
 }

@@ -30,11 +30,11 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final SetPath<Inventory, QInventory> inventories = this.<Inventory, QInventory>createSet("inventories", Inventory.class, QInventory.class, PathInits.DIRECT2);
-
     public final SetPath<InvoiceDetail, QInvoiceDetail> invoiceDetails = this.<InvoiceDetail, QInvoiceDetail>createSet("invoiceDetails", InvoiceDetail.class, QInvoiceDetail.class, PathInits.DIRECT2);
 
     public final StringPath name = createString("name");
+
+    public final SetPath<ProductInventory, QProductInventory> productInventories = this.<ProductInventory, QProductInventory>createSet("productInventories", ProductInventory.class, QProductInventory.class, PathInits.DIRECT2);
 
     public final SetPath<Store, QStore> stores = this.<Store, QStore>createSet("stores", Store.class, QStore.class, PathInits.DIRECT2);
 

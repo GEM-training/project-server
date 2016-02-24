@@ -32,7 +32,7 @@ public class QInventory extends EntityPathBase<Inventory> {
 
     public final StringPath name = createString("name");
 
-    public final SetPath<Product, QProduct> products = this.<Product, QProduct>createSet("products", Product.class, QProduct.class, PathInits.DIRECT2);
+    public final SetPath<ProductInventory, QProductInventory> productInventories = this.<ProductInventory, QProductInventory>createSet("productInventories", ProductInventory.class, QProductInventory.class, PathInits.DIRECT2);
 
     public final QStore store;
 

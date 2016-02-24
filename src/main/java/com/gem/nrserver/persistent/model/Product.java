@@ -48,16 +48,12 @@ public class Product {
     private Set<Store> stores;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "product_inventory", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "inventory_id"))
-    private Set<Inventory> inventories;
+    @OneToMany(mappedBy = "product")
+    private Set<ProductInventory> productInventories;
 
     @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     Set<InvoiceDetail> invoiceDetails;
-
-
-
 
     public String getName() {
         return name;
@@ -107,11 +103,4 @@ public class Product {
         this.stores = stores;
     }
 
-    public Set<Inventory> getInventories() {
-        return inventories;
-    }
-
-    public void setInventories(Set<Inventory> inventories) {
-        this.inventories = inventories;
-    }
 }

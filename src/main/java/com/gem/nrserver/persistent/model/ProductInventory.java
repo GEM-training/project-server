@@ -1,6 +1,7 @@
 package com.gem.nrserver.persistent.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,12 +9,18 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "product_inventory")
+@IdClass(ProductInventory.Id.class)
 public class ProductInventory {
-    @Id
-    @SequenceGenerator(name = "product_inventory_id_seq", sequenceName = "product_inventory_id_seq", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_inventory_id_seq")
-    @Column(name = "id")
-    private long id;
+
+    @javax.persistence.Id
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
+
+    @javax.persistence.Id
+    @ManyToOne
+    @JoinColumn(name = "inventory_id", referencedColumnName = "id")
+    private Inventory inventory;
 
     @Column(name = "quantity")
     private int quantity;
@@ -23,16 +30,6 @@ public class ProductInventory {
 
     @Column(name = "updated_date")
     private Date updatedDate;
-
-
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public int getQuantity() {
         return quantity;
@@ -56,5 +53,46 @@ public class ProductInventory {
 
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    @Embeddable
+    public static class Id implements Serializable {
+        public Product product;
+        public Inventory inventory;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Id id = (Id) o;
+
+            if (!product.equals(id.product)) return false;
+            return inventory.equals(id.inventory);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = product.hashCode();
+            result = 31 * result + inventory.hashCode();
+            return result;
+        }
     }
 }

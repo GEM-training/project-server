@@ -42,17 +42,9 @@ public class Inventory {
     }
 
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "product_inventory", joinColumns = @JoinColumn(name = "inventory"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Product> products;
+    @OneToMany(mappedBy = "inventory")
+    private Set<ProductInventory> productInventories;
 
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
 
     public void setStore(Store store) {
         this.store = store;

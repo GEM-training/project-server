@@ -36,10 +36,8 @@ public class Invoice {
     @JoinColumn(name = "customer_id", referencedColumnName = "username")
     private User customer;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "invoice_detail", joinColumns = @JoinColumn(name = "invoice"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Product> products;
+    @OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY)
+    private Set<InvoiceDetail> invoiceDetails;
 
 
     public String getStatus() {
@@ -88,14 +86,6 @@ public class Invoice {
 
     public void setCustomer(User customer) {
         this.customer = customer;
-    }
-
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
     }
 
 }
