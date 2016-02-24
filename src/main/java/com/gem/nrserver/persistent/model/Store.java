@@ -40,7 +40,7 @@ public class Store {
 
     @JsonIgnore
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
-    private Set<Staff> staffs;
+    private Set<User> staffs;
 
     @JsonIgnore
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
@@ -56,8 +56,6 @@ public class Store {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
-
-
 
 
     public long getId() {
@@ -116,11 +114,11 @@ public class Store {
         this.inventories = inventories;
     }
 
-    public Set<Staff> getStaffs() {
+    public Set<User> getStaffs() {
         return staffs;
     }
 
-    public void setStaffs(Set<Staff> staffs) {
+    public void setStaffs(Set<User> staffs) {
         this.staffs = staffs;
     }
 

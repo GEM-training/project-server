@@ -24,7 +24,7 @@ public class QInvoice extends EntityPathBase<Invoice> {
 
     public final DateTimePath<java.util.Date> createdDate = createDateTime("createdDate", java.util.Date.class);
 
-    public final QCustomer customer;
+    public final QUser customer;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -54,7 +54,7 @@ public class QInvoice extends EntityPathBase<Invoice> {
 
     public QInvoice(Class<? extends Invoice> type, PathMetadata<?> metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.customer = inits.isInitialized("customer") ? new QCustomer(forProperty("customer")) : null;
+        this.customer = inits.isInitialized("customer") ? new QUser(forProperty("customer"), inits.get("customer")) : null;
         this.store = inits.isInitialized("store") ? new QStore(forProperty("store"), inits.get("store")) : null;
     }
 

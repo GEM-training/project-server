@@ -33,8 +33,8 @@ public class Invoice {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @JoinColumn(name = "customer_id", referencedColumnName = "username")
+    private User customer;
 
     @JsonIgnore
     @ManyToMany
@@ -82,11 +82,11 @@ public class Invoice {
         this.store = store;
     }
 
-    public Customer getCustomer() {
+    public User getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(User customer) {
         this.customer = customer;
     }
 

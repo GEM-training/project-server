@@ -40,7 +40,7 @@ public class QStore extends EntityPathBase<Store> {
 
     public final SetPath<Product, QProduct> products = this.<Product, QProduct>createSet("products", Product.class, QProduct.class, PathInits.DIRECT2);
 
-    public final SetPath<Staff, QStaff> staffs = this.<Staff, QStaff>createSet("staffs", Staff.class, QStaff.class, PathInits.DIRECT2);
+    public final SetPath<User, QUser> staffs = this.<User, QUser>createSet("staffs", User.class, QUser.class, PathInits.DIRECT2);
 
     public final DateTimePath<java.util.Date> updatedDate = createDateTime("updatedDate", java.util.Date.class);
 
