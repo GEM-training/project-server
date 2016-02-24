@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackages = "com.gem.usrmgr.security")
+@ComponentScan(basePackages = "com.gem.nrserver.restful.security")
 @Order(1)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
