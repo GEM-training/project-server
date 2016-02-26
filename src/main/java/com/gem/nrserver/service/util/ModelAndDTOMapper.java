@@ -44,8 +44,8 @@ public class ModelAndDTOMapper {
 
     public static UserDTO userModelToDTO(User model) {
         UserDTO dto = new UserDTO();
-        model.setUsername(dto.getUsername());
-        model.setPassword(dto.getPassword());
+        dto.setUsername(model.getUsername());
+        dto.setPassword(model.getPassword());
         return dto;
     }
 
