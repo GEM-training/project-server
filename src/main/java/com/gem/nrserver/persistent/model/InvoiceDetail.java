@@ -33,8 +33,6 @@ public class InvoiceDetail {
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
 
-
-
     public Date getUpdatedDate() {
         return updatedDate;
     }

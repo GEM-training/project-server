@@ -32,7 +32,6 @@ public class Enterprise {
     @Column(name = "description")
     private String description;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "enterprise", fetch = FetchType.LAZY)
     Set<Company> companies;
 

@@ -1,5 +1,6 @@
 package com.gem.nrserver.service.impl;
 
+import com.gem.nrserver.persistent.model.ProductStore;
 import com.gem.nrserver.persistent.repository.ProductRepository;
 import com.gem.nrserver.persistent.repository.StoreRepository;
 import com.gem.nrserver.service.StoreService;
@@ -44,10 +45,10 @@ public class StoreServiceImpl implements StoreService {
     public List<Product> listProducts(Long storeId) throws Exception {
         com.gem.nrserver.persistent.model.Store store = storeRepository.findOne(storeId);
         if(store == null) throw new StoreNotFoundException();
-        Set<com.gem.nrserver.persistent.model.Product> productSet = store.getProducts();
+        Set<ProductStore> productSet = store.getProductStores();
         ArrayList<Product> products = new ArrayList<Product>();
-        for (com.gem.nrserver.persistent.model.Product product: productSet) {
-            products.add(ModelDtoMapper.productModelToDTO(product));
+        for (ProductStore product: productSet) {
+            products.add(ModelDtoMapper.productModelToDTO(product.getProduct()));
         }
         return products;
     }

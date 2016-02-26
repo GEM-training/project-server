@@ -1,6 +1,7 @@
 package com.gem.nrserver.persistent.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,14 +9,19 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "product_store")
+@IdClass(ProductStore.Id.class)
 public class ProductStore {
-    @Id
-    @SequenceGenerator(name = "product_store_id_seq", sequenceName = "product_store_id_seq", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_store_id_seq")
 
+    @javax.persistence.Id
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
 
-    @Column(name = "id")
-    private long id;
+    @javax.persistence.Id
+    @ManyToOne
+    @JoinColumn(name = "store_id", referencedColumnName = "id")
+    private Store store;
+
     @Column(name = "created_date")
     private Date createdDate;
 
@@ -23,10 +29,7 @@ public class ProductStore {
     private Date updatedDate;
 
     @Column(name = "price")
-
     private float price;
-
-
 
     public float getPrice() {
         return price;
@@ -52,13 +55,45 @@ public class ProductStore {
         this.createdDate = createdDate;
     }
 
-    public long getId() {
-        return id;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    @Embeddable
+    public static class Id implements Serializable {
+        public Product product;
+        public Store store;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Id id = (Id) o;
+
+            if (!product.equals(id.product)) return false;
+            return store.equals(id.store);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = product.hashCode();
+            result = 31 * result + store.hashCode();
+            return result;
+        }
+    }
 
 }

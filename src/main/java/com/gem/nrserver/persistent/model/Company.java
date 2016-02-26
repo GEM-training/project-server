@@ -33,11 +33,9 @@ public class Company {
 
     @Column(name = "description")
 
-    @JsonIgnore
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     Set<Store> setStores;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;

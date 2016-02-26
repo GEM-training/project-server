@@ -26,19 +26,16 @@ public class Invoice {
     @Column(name = "status")
     private String status;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private Store store;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "username")
     private User customer;
 
     @OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY)
     private Set<InvoiceDetail> invoiceDetails;
-
 
     public String getStatus() {
         return status;

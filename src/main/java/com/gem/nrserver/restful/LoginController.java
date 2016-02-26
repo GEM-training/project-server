@@ -61,16 +61,16 @@ public class LoginController {
             responseUserInfo.setRole(userRoleService.findByUsername(userInfo.getUsername()));
             responseUserInfo.setToken(token);
 
-            return new ResponseDTO(HttpStatus.OK,null,responseUserInfo);
+            return new ResponseDTO(HttpStatus.OK.value(),null,responseUserInfo);
         } catch (IllegalArgumentException e) {
-            return new ResponseDTO(HttpStatus.OK,e.getMessage(),null);
+            return new ResponseDTO(HttpStatus.OK.value(),e.getMessage(),null);
         }
     }
 
     @RequestMapping(value = "/logoutuser", method = RequestMethod.GET,produces = "application/json")
     public ResponseDTO logout(HttpServletRequest request) {
         authenticationService.deauthenticate(request.getHeader("token"));
-        return new ResponseDTO(HttpStatus.OK,"Logout successful",null);
+        return new ResponseDTO(HttpStatus.OK.value(),"Logout successful",null);
     }
 
 }

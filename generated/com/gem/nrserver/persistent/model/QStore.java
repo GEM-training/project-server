@@ -38,7 +38,7 @@ public class QStore extends EntityPathBase<Store> {
 
     public final StringPath name = createString("name");
 
-    public final SetPath<Product, QProduct> products = this.<Product, QProduct>createSet("products", Product.class, QProduct.class, PathInits.DIRECT2);
+    public final SetPath<ProductStore, QProductStore> productStores = this.<ProductStore, QProductStore>createSet("productStores", ProductStore.class, QProductStore.class, PathInits.DIRECT2);
 
     public final SetPath<User, QUser> staffs = this.<User, QUser>createSet("staffs", User.class, QUser.class, PathInits.DIRECT2);
 

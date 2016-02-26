@@ -1,7 +1,5 @@
 package com.gem.nrserver.persistent.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -29,30 +27,17 @@ public class Product {
     @Column(name = "updated_date")
     private Date updatedDate;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "product_store", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "store_id"))
-    private Set<Store> stores;
+    @OneToMany(mappedBy = "product")
+    private Set<ProductStore> productStores;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private Set<ProductInventory> productInventories;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product")
     Set<InvoiceDetail> invoiceDetails;
 
     public String getName() {
@@ -95,12 +80,35 @@ public class Product {
         this.enterprise = enterprise;
     }
 
-    public Set<Store> getStores() {
-        return stores;
+    public long getId() {
+        return id;
     }
 
-    public void setStores(Set<Store> stores) {
-        this.stores = stores;
+    public void setId(long id) {
+        this.id = id;
     }
 
+    public Set<ProductStore> getProductStores() {
+        return productStores;
+    }
+
+    public void setProductStores(Set<ProductStore> productStores) {
+        this.productStores = productStores;
+    }
+
+    public Set<ProductInventory> getProductInventories() {
+        return productInventories;
+    }
+
+    public void setProductInventories(Set<ProductInventory> productInventories) {
+        this.productInventories = productInventories;
+    }
+
+    public Set<InvoiceDetail> getInvoiceDetails() {
+        return invoiceDetails;
+    }
+
+    public void setInvoiceDetails(Set<InvoiceDetail> invoiceDetails) {
+        this.invoiceDetails = invoiceDetails;
+    }
 }

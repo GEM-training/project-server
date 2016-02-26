@@ -1,21 +1,23 @@
 package com.gem.nrserver.restful.dto;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.http.HttpStatus;
 
 /**
  * Created by quanda on 19/02/2016.
  */
 public class ResponseDTO {
-    HttpStatus statusCode;
+    Integer statusCode;
     String message;
     Object returnObject;
 
-    public HttpStatus getStatusCode() {
-        return statusCode;
-    }
+    public ResponseDTO() {}
 
-    public void setStatusCode(HttpStatus statusCode) {
+    public ResponseDTO(int statusCode, String message, Object returnObject) {
+
         this.statusCode = statusCode;
+        this.message = message;
+        this.returnObject = returnObject;
     }
 
     public String getMessage() {
@@ -34,10 +36,11 @@ public class ResponseDTO {
         this.returnObject = returnObject;
     }
 
-    public ResponseDTO(HttpStatus statusCode, String message, Object returnObject) {
+    public Integer getStatusCode() {
+        return statusCode;
+    }
 
+    public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
-        this.message = message;
-        this.returnObject = returnObject;
     }
 }

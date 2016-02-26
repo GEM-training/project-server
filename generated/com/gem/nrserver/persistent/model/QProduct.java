@@ -36,7 +36,7 @@ public class QProduct extends EntityPathBase<Product> {
 
     public final SetPath<ProductInventory, QProductInventory> productInventories = this.<ProductInventory, QProductInventory>createSet("productInventories", ProductInventory.class, QProductInventory.class, PathInits.DIRECT2);
 
-    public final SetPath<Store, QStore> stores = this.<Store, QStore>createSet("stores", Store.class, QStore.class, PathInits.DIRECT2);
+    public final SetPath<ProductStore, QProductStore> productStores = this.<ProductStore, QProductStore>createSet("productStores", ProductStore.class, QProductStore.class, PathInits.DIRECT2);
 
     public final DateTimePath<java.util.Date> updatedDate = createDateTime("updatedDate", java.util.Date.class);
 

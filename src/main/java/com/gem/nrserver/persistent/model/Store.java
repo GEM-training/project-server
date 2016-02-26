@@ -1,7 +1,5 @@
 package com.gem.nrserver.persistent.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -34,25 +32,18 @@ public class Store {
     @Column(name = "description")
     private String description;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private Set<Inventory> inventories;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private Set<User> staffs;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private Set<Invoice> invoices;
 
+    @OneToMany(mappedBy = "store")
+    private Set<ProductStore> productStores;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "product_store", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Product> products;
-
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
@@ -130,20 +121,20 @@ public class Store {
         this.invoices = invoices;
     }
 
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
-
     public Company getCompany() {
         return company;
     }
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Set<ProductStore> getProductStores() {
+        return productStores;
+    }
+
+    public void setProductStores(Set<ProductStore> productStores) {
+        this.productStores = productStores;
     }
 }
 

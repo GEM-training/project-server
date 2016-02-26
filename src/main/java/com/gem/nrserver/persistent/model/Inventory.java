@@ -32,7 +32,6 @@ public class Inventory {
     @Column(name = "description")
     private String description;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
@@ -41,7 +40,6 @@ public class Inventory {
         return store;
     }
 
-    @JsonIgnore
     @OneToMany(mappedBy = "inventory")
     private Set<ProductInventory> productInventories;
 
