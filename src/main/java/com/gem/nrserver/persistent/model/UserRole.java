@@ -10,7 +10,7 @@ public class UserRole {
     @Column(name = "user_role_id", unique = true, nullable = false)
     @SequenceGenerator(name = "user_role_id_seq", sequenceName = "user_role_id_seq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_role_id_seq")
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "username", referencedColumnName = "username")

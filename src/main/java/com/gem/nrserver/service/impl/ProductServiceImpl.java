@@ -1,18 +1,16 @@
 package com.gem.nrserver.service.impl;
 
+import com.gem.nrserver.persistent.model.Product;
 import com.gem.nrserver.persistent.repository.ProductRepository;
 import com.gem.nrserver.service.ProductService;
 import com.gem.nrserver.service.dto.ProductDTO;
 import com.gem.nrserver.service.exception.ProductNotFoundException;
-import com.gem.nrserver.service.util.ModelAndDTOMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Transactional
@@ -33,13 +31,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Long save(ProductDTO dto) {
-        return productRepository.save(ModelAndDTOMapper.productDTOtoModel(dto)).getId();
+    public void create(ProductDTO dto) {
+        Product product = new Product();
+        BeanUtils.copyProperties(dto, product);
+        productRepository.save(product);
     }
 
     @Override
     public void update(ProductDTO dto) {
-        com.gem.nrserver.persistent.model.Product product = productRepository.findOne(dto.getId());
+        Product product = productRepository.findOne(dto.getId());
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
         productRepository.save(product);
@@ -47,15 +47,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO findOne(Long id) throws ProductNotFoundException {
-        com.gem.nrserver.persistent.model.Product product = productRepository.findOne(id);
+        Product product = productRepository.findOne(id);
         if(product == null) throw new ProductNotFoundException();
-        return ModelAndDTOMapper.productModelToDTO(product);
+        ProductDTO dto = new ProductDTO();
+        BeanUtils.copyProperties(product, dto);
+        return dto;
     }
 
     @Override
     public Page<ProductDTO> findAll(Pageable pageable) {
-        Page<com.gem.nrserver.persistent.model.Product> products = productRepository.findAll(pageable);
-        return products.map(ModelAndDTOMapper::productModelToDTO);
+        Page<Product> products = productRepository.findAll(pageable);
+        return products.map(source -> {
+            ProductDTO dto = new ProductDTO();
+            BeanUtils.copyProperties(source, dto);
+            return dto;
+        });
     }
 
     @Override

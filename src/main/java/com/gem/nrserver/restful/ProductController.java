@@ -24,7 +24,7 @@ public class ProductController {
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json")
     public void create(@RequestBody ProductDTO productDTO) throws Exception {
-        productService.save(productDTO);
+        productService.create(productDTO);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, consumes = "application/json")

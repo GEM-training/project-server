@@ -11,12 +11,12 @@ public class Company {
     @SequenceGenerator(name = "company_id_seq", sequenceName = "company_seq_id", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "company_id_seq")
     @Column(name = "id", nullable = false, unique = true)
-    private long id;
+    private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "address", nullable = true)
+    @Column(name = "address")
     private String address;
 
     @Column(name = "description")

@@ -21,21 +21,13 @@ public class ProductStore {
     private Store store;
 
     @Column(name = "price")
-    private float price;
+    private double price;
 
     @Column(name = "created_date")
     private Date createdDate;
 
     @Column(name = "updated_date")
     private Date updatedDate;
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
 
     public Date getUpdatedDate() {
         return updatedDate;

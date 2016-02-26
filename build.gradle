@@ -55,8 +55,8 @@ dependencies {
     compile 'com.h2database:h2:1.4.190'
     compile 'org.postgresql:postgresql:9.4.1207.jre7'
 
-    compile 'com.google.code.gson:gson:2.6.1'
     compile 'org.apache.commons:commons-lang3:3.4'
+//    compile 'commons-beanutils:commons-beanutils:1.9.2'
 
     compile 'org.apache.logging.log4j:log4j-core:2.5'
     compile 'org.apache.logging.log4j:log4j-api:2.5'

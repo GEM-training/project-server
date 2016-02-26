@@ -8,12 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * Created by quanda on 19/02/2016.
- */
 @Service
 @Transactional
 public class UserRoleServiceImpl implements UserRoleService {
+
     @Autowired
     private UserRoleRepository userRoleRepository;
 

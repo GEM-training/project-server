@@ -24,7 +24,7 @@ public class StoreController {
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json")
     public void create(@RequestBody StoreDTO storeDTO) throws Exception {
-        storeService.save(storeDTO);
+        storeService.create(storeDTO);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, consumes = "application/json")

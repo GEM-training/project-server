@@ -37,7 +37,7 @@ public class LoginController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json")
     public void register(@RequestBody UserDTO userDTO) throws Exception {
-        userService.save(userDTO);
+        userService.create(userDTO);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")

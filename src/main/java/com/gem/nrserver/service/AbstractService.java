@@ -11,7 +11,7 @@ import java.util.List;
 public interface AbstractService<TYPE, ID> {
     Long count();
     boolean exists(ID id);
-    ID save(TYPE dto) throws Exception;
+    void create(TYPE dto) throws Exception;
     void update(TYPE dto) throws Exception;
     TYPE findOne(ID id) throws Exception;
     Page<TYPE> findAll(Pageable pageable);

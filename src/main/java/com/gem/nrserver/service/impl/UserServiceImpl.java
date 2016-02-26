@@ -6,11 +6,11 @@ import com.gem.nrserver.persistent.repository.UserRepository;
 import com.gem.nrserver.service.UserService;
 import com.gem.nrserver.service.dto.ProductDTO;
 import com.gem.nrserver.service.dto.UserDTO;
-import com.gem.nrserver.service.util.ModelAndDTOMapper;
-import com.mysema.query.JoinExpression;
+import com.gem.nrserver.service.exception.UserNotFoundException;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.types.Predicate;
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,9 +26,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Created by kimtung on 2/18/16.
- */
 @Service("service_user")
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -54,8 +51,11 @@ public class UserServiceImpl implements UserService {
                         .where(QInvoice.invoice.id.eq(QInvoiceDetail.invoiceDetail.invoice.id)
                                 .and(QInvoice.invoice.customer.username.eq(userId)))
                         .list(QInvoiceDetail.invoiceDetail.product));
-        return productRepository.findAll(predicate, pageable).map(ModelAndDTOMapper::productModelToDTO);
-//        return productRepository.listProductPurchasedByUser(userId, pageable).map(ModelAndDTOMapper::productModelToDTO);
+        return productRepository.findAll(predicate, pageable).map(source -> {
+            ProductDTO dto = new ProductDTO();
+            BeanUtils.copyProperties(source, dto);
+            return dto;
+        });
     }
 
     @Override
@@ -86,10 +86,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String save(UserDTO dto) throws Exception {
+    public void create(UserDTO dto) throws Exception {
         if(!userRepository.isUsernameAvailable(dto.getUsername()))
             throw new IllegalArgumentException("username is not available");
-        return userRepository.save(ModelAndDTOMapper.userDTOtoModel(dto)).getUsername();
+        User user = new User();
+        BeanUtils.copyProperties(dto, user);
+        userRepository.save(user);
     }
 
     @Override
@@ -98,14 +100,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO findOne(String s) throws Exception {
-        return ModelAndDTOMapper.userModelToDTO(userRepository.findOne(s));
+    public UserDTO findOne(String id) throws Exception {
+        User user = userRepository.findOne(id);
+        if(user == null) throw new UserNotFoundException();
+        UserDTO dto = new UserDTO();
+        BeanUtils.copyProperties(user, dto);
+        return dto;
     }
 
     @Override
     public Page<UserDTO> findAll(Pageable pageable) {
         Page<User> userPage = userRepository.findAll(pageable);
-        return userPage.map(ModelAndDTOMapper::userModelToDTO);
+        return userPage.map(source -> {
+            UserDTO dto = new UserDTO();
+            BeanUtils.copyProperties(source, dto);
+            return dto;
+        });
     }
 
     @Override

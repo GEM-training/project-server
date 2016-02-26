@@ -24,7 +24,7 @@ public class QProductStore extends EntityPathBase<ProductStore> {
 
     public final DateTimePath<java.util.Date> createdDate = createDateTime("createdDate", java.util.Date.class);
 
-    public final NumberPath<Float> price = createNumber("price", Float.class);
+    public final NumberPath<Double> price = createNumber("price", Double.class);
 
     public final QProduct product;
 

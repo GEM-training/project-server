@@ -7,18 +7,15 @@ import com.gem.nrserver.persistent.repository.UserRepository;
 import com.gem.nrserver.service.AuthenticationService;
 import com.gem.nrserver.service.dto.UserDTO;
 import com.gem.nrserver.service.exception.UserNotFoundException;
-import com.gem.nrserver.service.util.ModelAndDTOMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.MessageDigest;
 
-/**
- * Created by kimtung on 2/18/16.
- */
 @Service
 @Transactional
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -63,7 +60,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public UserDTO getUserFromToken(String token) {
         String username = persistentLoginRepository.getUsernameFromToken(token);
         if(username == null) return null;
-        return ModelAndDTOMapper.userModelToDTO(userRepository.findOne(username));
+        UserDTO dto = new UserDTO();
+        BeanUtils.copyProperties(userRepository.findOne(username), dto);
+        return dto;
     }
 
     @Override

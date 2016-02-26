@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-/**
- * Created by kimtung on 2/24/16.
- */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
