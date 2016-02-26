@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void create(UserDTO dto) throws Exception {
+    public void create(UserDTO dto) {
         if(!userRepository.isUsernameAvailable(dto.getUsername()))
             throw new IllegalArgumentException("username is not available");
         User user = new User();
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void update(UserDTO dto) throws Exception {
+    public void update(UserDTO dto) {
 
     }
 
@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void delete(String s) throws Exception {
+    public void delete(String s) {
         userRepository.delete(s);
     }
 }

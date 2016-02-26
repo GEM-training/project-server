@@ -2,19 +2,10 @@ package com.gem.nrserver.service.dto;
 
 public class UserCredential {
 
-    public String username;
-    public String password;
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String token;
-    public String deviceId;
+    private String username;
+    private String password;
+    private String token;
+    private String deviceId;
 
     public String getUsername() {
         return username;
@@ -38,5 +29,13 @@ public class UserCredential {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

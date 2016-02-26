@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by kimtung on 2/17/16.
- */
 @Component
 class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override

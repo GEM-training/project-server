@@ -3,6 +3,7 @@ package com.gem.nrserver.restful.security;
 import com.gem.nrserver.service.AuthenticationService;
 import com.gem.nrserver.service.dto.UserCredential;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,9 +20,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-/**
- * Created by kimtung on 2/17/16.
- */
 @Component
 public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
@@ -35,22 +33,19 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
     private UserDetailsService userDetailsService;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException, AuthenticationCredentialsNotFoundException {
         if(request instanceof HttpServletRequest) {
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             String token = httpServletRequest.getHeader("token");
             String deviceId = httpServletRequest.getHeader("deviceId");
             if(token != null && deviceId != null) {
-                try {
-                    UserCredential userCredential = authenticationService.authenticate(token, deviceId);
-                    UserDetails user = userDetailsService.loadUserByUsername(userCredential.getUsername());
-                    UsernamePasswordAuthenticationToken authenticationToken =
-                            new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) request));
-                    SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(authenticationToken));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                UserCredential userCredential = authenticationService.authenticate(token, deviceId);
+                UserDetails user = userDetailsService.loadUserByUsername(userCredential.getUsername());
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(authenticationToken));
             }
         }
         chain.doFilter(request, response);

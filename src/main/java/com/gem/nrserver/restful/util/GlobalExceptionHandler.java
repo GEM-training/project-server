@@ -1,4 +1,4 @@
-package com.gem.nrserver.restful;
+package com.gem.nrserver.restful.util;
 
 import com.gem.nrserver.service.exception.ProductNotFoundException;
 import com.gem.nrserver.service.exception.StoreNotFoundException;

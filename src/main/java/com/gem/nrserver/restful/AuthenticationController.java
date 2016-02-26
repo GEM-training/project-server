@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/authenticate")
-public class AuthenticateController {
+public class AuthenticationController {
 
     @Autowired
     @Qualifier("service_user")

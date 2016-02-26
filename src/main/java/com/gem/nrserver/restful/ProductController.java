@@ -7,9 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Created by kimtung on 2/24/16.
- */
 @RestController
 @RequestMapping("/product")
 public class ProductController {

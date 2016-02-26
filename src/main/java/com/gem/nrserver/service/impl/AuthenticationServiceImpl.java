@@ -31,7 +31,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserRepository userRepository;
 
     @Override
-    public UserCredential authenticate(String username, String password, String deviceId) throws Exception {
+    public UserCredential authenticate(String username, String password, String deviceId)
+            throws AuthenticationCredentialsNotFoundException {
         BooleanExpression isValidCredential = QUser.user.username.eq(username).and(QUser.user.password.eq(password));
         User user = userRepository.findOne(isValidCredential);
         if(user == null) throw new AuthenticationCredentialsNotFoundException("invalid username or password");
@@ -42,19 +43,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if(token != null) {
             userCredential.setToken(token);
         } else {
-            token = convertStringToMD5(RandomStringUtils.randomAlphanumeric(12));
             PersistentLogin persistentLogin = new PersistentLogin();
             persistentLogin.setUsername(user.getUsername());
-            persistentLogin.setToken(token);
             persistentLogin.setDeviceId(deviceId);
-            persistentLoginRepository.save(persistentLogin);
+            boolean valid = true;
+            do {
+                try {
+                    token = convertStringToMD5(RandomStringUtils.randomAlphanumeric(12));
+                    persistentLogin.setToken(token);
+                    persistentLoginRepository.save(persistentLogin);
+                } catch (Exception e) {
+                    valid = false; // token is invalid if exception is thrown
+                }
+            } while (!valid); // re-generate different token if any exception occurs
             userCredential.setToken(token);
         }
         return userCredential;
     }
 
     @Override
-    public UserCredential authenticate(String token, String deviceId) throws Exception {
+    public UserCredential authenticate(String token, String deviceId)
+            throws AuthenticationCredentialsNotFoundException {
         BooleanExpression isValidCredential = QPersistentLogin.persistentLogin.token.eq(token)
                 .and(QPersistentLogin.persistentLogin.deviceId.eq(deviceId));
         PersistentLogin pLogin = persistentLoginRepository.findOne(isValidCredential);
@@ -69,7 +78,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void deauthenticate(String token) {
         log.info("deauthenticate token " + token);
-        persistentLoginRepository.deleteByToken(token);
+        persistentLoginRepository.deleteByToken(token); //delete session token when users logout
     }
 
     private String convertStringToMD5(String string) {
