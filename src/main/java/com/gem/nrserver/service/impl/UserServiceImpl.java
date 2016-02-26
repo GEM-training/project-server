@@ -1,13 +1,15 @@
 package com.gem.nrserver.service.impl;
 
-import com.gem.nrserver.persistent.model.User;
-import com.gem.nrserver.persistent.model.UserRole;
+import com.gem.nrserver.persistent.model.*;
 import com.gem.nrserver.persistent.repository.ProductRepository;
 import com.gem.nrserver.persistent.repository.UserRepository;
 import com.gem.nrserver.service.UserService;
 import com.gem.nrserver.service.dto.ProductDTO;
 import com.gem.nrserver.service.dto.UserDTO;
 import com.gem.nrserver.service.util.ModelAndDTOMapper;
+import com.mysema.query.JoinExpression;
+import com.mysema.query.jpa.JPASubQuery;
+import com.mysema.query.types.Predicate;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,7 +48,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<ProductDTO> listPurchasedProduct(String userId, Pageable pageable) throws Exception{
-        return productRepository.listProductPurchasedByUser(userId, pageable).map(ModelAndDTOMapper::productModelToDTO);
+        Predicate predicate = QProduct.product
+                .in(new JPASubQuery().distinct()
+                        .from(QInvoice.invoice,QInvoiceDetail.invoiceDetail)
+                        .where(QInvoice.invoice.id.eq(QInvoiceDetail.invoiceDetail.invoice.id)
+                                .and(QInvoice.invoice.customer.username.eq(userId)))
+                        .list(QInvoiceDetail.invoiceDetail.product));
+        return productRepository.findAll(predicate, pageable).map(ModelAndDTOMapper::productModelToDTO);
+//        return productRepository.listProductPurchasedByUser(userId, pageable).map(ModelAndDTOMapper::productModelToDTO);
     }
 
     @Override
