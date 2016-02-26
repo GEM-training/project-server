@@ -10,6 +10,16 @@ import java.util.Date;
 @IdClass(InvoiceDetail.Id.class)
 public class InvoiceDetail {
 
+    @javax.persistence.Id
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @javax.persistence.Id
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "invoice_id")
+    private Invoice invoice;
+
     @Column(name = "quantity")
     private int quantity;
 
@@ -18,40 +28,6 @@ public class InvoiceDetail {
 
     @Column(name = "updated_date")
     private Date updatedDate;
-
-    @javax.persistence.Id
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    @javax.persistence.Id
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "invoice_id")
-    private Invoice invoice;
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     public Product getProduct() {
         return product;
@@ -69,18 +45,40 @@ public class InvoiceDetail {
         this.invoice = invoice;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
     @Embeddable
     public static class Id implements Serializable {
-        private Product product;
-        private Invoice invoice;
+        public Product product;
+        public Invoice invoice;
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-
             Id id = (Id) o;
-
             return product.equals(id.product) && invoice.equals(id.invoice);
 
         }

@@ -85,15 +85,6 @@ public class StoreServiceImpl implements StoreService {
         return ModelAndDTOMapper.storeModeltoDTO(store);
     }
 
-    @Override
-    public List<StoreDTO> findAll() {
-        Iterable<com.gem.nrserver.persistent.model.Store> stores = storeRepository.findAll();
-        ArrayList<StoreDTO> storeDTOs = new ArrayList<>();
-        for(com.gem.nrserver.persistent.model.Store store: stores){
-            storeDTOs.add(ModelAndDTOMapper.storeModeltoDTO(store));
-        }
-        return storeDTOs;
-    }
 
     @Override
     public Page<StoreDTO> findAll(Pageable pageable) {

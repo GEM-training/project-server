@@ -8,15 +8,19 @@ import java.util.Set;
 @Table(name = "enterprise")
 public class Enterprise {
     @Id
-    @SequenceGenerator(name = "enterprise_id_seq", sequenceName = "enterprise_id_seq", initialValue = 1,allocationSize = 1)
+    @SequenceGenerator(name = "enterprise_id_seq", sequenceName = "enterprise_id_seq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "enterprise_id_seq")
     @Column(name = "id", nullable = false, unique = true)
     private long id;
+
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "address", nullable = true)
     private String address;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "created_date")
     private Date createdDate;
@@ -24,12 +28,8 @@ public class Enterprise {
     @Column(name = "updated_date")
     private Date updatedDate;
 
-    @Column(name = "description")
-    private String description;
-
-    @OneToMany(mappedBy = "enterprise", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "enterprise")
     private Set<Company> companies;
-
 
     public Set<Company> getCompanies() {
         return companies;

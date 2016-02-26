@@ -53,16 +53,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> findAll() {
-        Iterable<com.gem.nrserver.persistent.model.Product> products = productRepository.findAll();
-        ArrayList<ProductDTO> productDTOs = new ArrayList<>();
-        for(com.gem.nrserver.persistent.model.Product product : products){
-            productDTOs.add(ModelAndDTOMapper.productModelToDTO(product));
-        }
-        return productDTOs;
-    }
-
-    @Override
     public Page<ProductDTO> findAll(Pageable pageable) {
         Page<com.gem.nrserver.persistent.model.Product> products = productRepository.findAll(pageable);
         return products.map(ModelAndDTOMapper::productModelToDTO);

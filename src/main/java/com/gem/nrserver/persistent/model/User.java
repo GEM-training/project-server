@@ -20,7 +20,7 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
     private Set<UserRole> roles;
 
-    @OneToMany(mappedBy = "customer", fetch =  FetchType.LAZY)
+    @OneToMany(mappedBy = "customer")
     private Set<Invoice> invoices;
 
     @ManyToOne

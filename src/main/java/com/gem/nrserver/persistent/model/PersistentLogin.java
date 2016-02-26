@@ -11,17 +11,17 @@ import java.util.Date;
         uniqueConstraints = @UniqueConstraint(columnNames = {"username", "device_id"}))
 public class PersistentLogin {
 
-    @Column(name = "username", nullable = false)
-    private String username;
-
-    @Column(name = "device_id", nullable = false)
-    private String deviceId;
-
     @Id
     @GenericGenerator(name="persistent_login_id_seq", strategy = "uuid2")
     @GeneratedValue(generator = "persistent_login_id_seq")
     @Column(name = "series", nullable = false, unique = true)
     private String series;
+
+    @Column(name = "username", nullable = false)
+    private String username;
+
+    @Column(name = "device_id", nullable = false)
+    private String deviceId;
 
     @Column(name = "token", nullable = false, unique = true)
     private String token;

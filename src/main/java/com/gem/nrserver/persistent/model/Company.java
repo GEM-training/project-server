@@ -19,75 +19,28 @@ public class Company {
     @Column(name = "address", nullable = true)
     private String address;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "created_date")
     private Date createdDate;
 
     @Column(name = "updated_date")
     private Date updatedDate;
 
-    @Column(name = "description")
-
-    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
-    private Set<Store> setStores;
+    @OneToMany(mappedBy = "company")
+    private Set<Store> stores;
 
     @ManyToOne
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
 
-    public Set<Store> getSetStores() {
-        return setStores;
-    }
-
-    public void setSetStores(Set<Store> setStores) {
-        this.setStores = setStores;
-    }
-
-    public Enterprise getEnterprise() {
-        return enterprise;
-    }
-
-    public void setEnterprise(Enterprise enterprise) {
-        this.enterprise = enterprise;
-    }
-
-    private String description;
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
-
-    public Date getUpdatedDate() {
-
-        return updatedDate;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -98,8 +51,51 @@ public class Company {
         this.name = name;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public String getAddress() {
+        return address;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public Set<Store> getStores() {
+        return stores;
+    }
+
+    public void setStores(Set<Store> stores) {
+        this.stores = stores;
+    }
+
+    public Enterprise getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(Enterprise enterprise) {
+        this.enterprise = enterprise;
+    }
 }

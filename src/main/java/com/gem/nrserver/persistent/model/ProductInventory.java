@@ -77,9 +77,7 @@ public class ProductInventory {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-
             Id id = (Id) o;
-
             return product.equals(id.product) && inventory.equals(id.inventory);
 
         }

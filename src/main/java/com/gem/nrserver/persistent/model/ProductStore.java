@@ -20,14 +20,14 @@ public class ProductStore {
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private Store store;
 
+    @Column(name = "price")
+    private float price;
+
     @Column(name = "created_date")
     private Date createdDate;
 
     @Column(name = "updated_date")
     private Date updatedDate;
-
-    @Column(name = "price")
-    private float price;
 
     public float getPrice() {
         return price;
@@ -78,9 +78,7 @@ public class ProductStore {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-
             Id id = (Id) o;
-
             return product.equals(id.product) && store.equals(id.store);
 
         }

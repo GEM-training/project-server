@@ -19,14 +19,14 @@ public class Store {
     @Column(name = "address", nullable = true)
     private String address;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "created_date")
     private Date createdDate;
 
     @Column(name = "updated_date")
     private Date updatedDate;
-
-    @Column(name = "description")
-    private String description;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private Set<Inventory> inventories;
@@ -41,7 +41,7 @@ public class Store {
     private Set<ProductStore> productStores;
 
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
     private Company company;
 
 

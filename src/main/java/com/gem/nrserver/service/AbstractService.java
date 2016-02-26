@@ -14,7 +14,6 @@ public interface AbstractService<TYPE, ID> {
     ID save(TYPE dto) throws Exception;
     void update(TYPE dto) throws Exception;
     TYPE findOne(ID id) throws Exception;
-    List<TYPE> findAll();
     Page<TYPE> findAll(Pageable pageable);
     void delete(ID id) throws Exception;
 }

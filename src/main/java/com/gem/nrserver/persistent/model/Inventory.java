@@ -12,11 +12,15 @@ public class Inventory {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "inventory_id_seq")
     @Column(name = "id", nullable = false, unique = true)
     private long id;
+
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "address", nullable = true)
     private String address;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "created_date")
     private Date createdDate;
@@ -24,24 +28,12 @@ public class Inventory {
     @Column(name = "updated_date")
     private Date updatedDate;
 
-    @Column(name = "description")
-    private String description;
-
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
 
-    public Store getStore() {
-        return store;
-    }
-
     @OneToMany(mappedBy = "inventory")
     private Set<ProductInventory> productInventories;
-
-
-    public void setStore(Store store) {
-        this.store = store;
-    }
 
     public long getId() {
         return id;
@@ -49,38 +41,6 @@ public class Inventory {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getName() {
@@ -91,4 +51,51 @@ public class Inventory {
         this.name = name;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public Set<ProductInventory> getProductInventories() {
+        return productInventories;
+    }
+
+    public void setProductInventories(Set<ProductInventory> productInventories) {
+        this.productInventories = productInventories;
+    }
 }

@@ -13,14 +13,14 @@ public class Invoice {
     @Column(name = "id", nullable = false, unique = true)
     private long id;
 
+    @Column(name = "status")
+    private String status;
+
     @Column(name = "created_date")
     private Date createdDate;
 
     @Column(name = "updated_date")
     private Date updatedDate;
-
-    @Column(name = "status")
-    private String status;
 
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")
@@ -30,24 +30,9 @@ public class Invoice {
     @JoinColumn(name = "customer_id", referencedColumnName = "username")
     private User customer;
 
-    @OneToMany(mappedBy = "invoice", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "invoice")
     private Set<InvoiceDetail> invoiceDetails;
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
 
     public long getId() {
         return id;
@@ -57,12 +42,28 @@ public class Invoice {
         this.id = id;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public Store getStore() {

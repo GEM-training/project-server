@@ -90,16 +90,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> findAll() {
-        Iterable<User> users = userRepository.findAll();
-        List<UserDTO> userDTOs = new ArrayList<>();
-        for (User user : users) {
-            userDTOs.add(ModelAndDTOMapper.userModelToDTO(user));
-        }
-        return userDTOs;
-    }
-
-    @Override
     public Page<UserDTO> findAll(Pageable pageable) {
         Page<User> userPage = userRepository.findAll(pageable);
         return userPage.map(ModelAndDTOMapper::userModelToDTO);
