@@ -1,12 +1,19 @@
 package com.gem.nrserver.service.dto;
 
-/**
- * Created by kimtung on 2/17/16.
- */
-public class UserAuthenticationInfo {
+public class UserCredential {
 
     public String username;
     public String password;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String token;
     public String deviceId;
 
     public String getUsername() {
@@ -31,14 +38,5 @@ public class UserAuthenticationInfo {
 
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
-    }
-
-    @Override
-    public String toString() {
-        return "UserAuthenticationInfo{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", deviceId='" + deviceId + '\'' +
-                '}';
     }
 }

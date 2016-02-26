@@ -1,21 +1,13 @@
 package com.gem.nrserver.service;
 
 
-import com.gem.nrserver.service.dto.UserDTO;
+import com.gem.nrserver.service.dto.UserCredential;
 
-/**
- * Created by kimtung on 2/18/16.
- */
+
 public interface AuthenticationService {
 
-    String authenticate(String username, String password, String deviceId) throws Exception;
-
-    String getToken(String username, String deviceId);
-
-    boolean isAuthenticated(String token);
-
-    UserDTO getUserFromToken(String token);
-
+    UserCredential authenticate(String username, String password, String deviceId) throws Exception;
+    UserCredential authenticate(String token, String deviceId) throws Exception;
     void deauthenticate(String token);
 
 }
