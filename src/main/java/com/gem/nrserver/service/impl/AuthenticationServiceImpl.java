@@ -1,10 +1,13 @@
 package com.gem.nrserver.service.impl;
 
-import com.gem.nrserver.persistent.repository.PersistentLoginDao;
-import com.gem.nrserver.service.AuthenticationService;
-import com.gem.nrserver.service.UserService;
 import com.gem.nrserver.persistent.model.PersistentLogin;
 import com.gem.nrserver.persistent.model.User;
+import com.gem.nrserver.persistent.repository.PersistentLoginDao;
+import com.gem.nrserver.persistent.repository.UserRepository;
+import com.gem.nrserver.service.AuthenticationService;
+import com.gem.nrserver.service.dto.UserDTO;
+import com.gem.nrserver.service.exception.UserNotFoundException;
+import com.gem.nrserver.service.util.ModelAndDTOMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +26,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private static Logger log = Logger.getLogger(AuthenticationServiceImpl.class.getName());
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private PersistentLoginDao persistentLoginDao;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
-    public String authenticate(String username, String password, String deviceId) throws IllegalArgumentException {
-        User user = userService.findByUsername(username);
-        if(user == null || !user.getPassword().equals(password)) {
-            log.info("authentication failed: user " + username + " with device " + deviceId);
-            throw new IllegalArgumentException("invalid username and password");
-        }
+    public String authenticate(String username, String password, String deviceId) throws Exception {
+        User user = userRepository.findOne(username);
+        if(user == null) throw new UserNotFoundException();
         String token = persistentLoginDao.getToken(username, deviceId);
         if(token != null) {
             return token;
@@ -46,7 +46,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             persistentLogin.setDeviceId(deviceId);
             persistentLoginDao.persit(persistentLogin);
         }
-        log.info("authentication succeeded for user " + username + " with device " + deviceId);
         return token;
     }
 
@@ -61,9 +60,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User getUserFromToken(String token) {
+    public UserDTO getUserFromToken(String token) {
         String username = persistentLoginDao.getUsernameFromToken(token);
-        return userService.findByUsername(username);
+        return ModelAndDTOMapper.userModelToDTO(userRepository.findOne(username));
     }
 
     @Override

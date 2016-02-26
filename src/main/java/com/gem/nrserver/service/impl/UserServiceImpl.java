@@ -1,10 +1,18 @@
 package com.gem.nrserver.service.impl;
+
+import com.gem.nrserver.persistent.model.Invoice;
 import com.gem.nrserver.persistent.model.User;
 import com.gem.nrserver.persistent.model.UserRole;
-import com.gem.nrserver.persistent.repository.UserDao;
+import com.gem.nrserver.persistent.repository.UserRepository;
 import com.gem.nrserver.service.UserService;
+import com.gem.nrserver.service.dto.ProductDTO;
+import com.gem.nrserver.service.dto.UserDTO;
+import com.gem.nrserver.service.exception.UserNotFoundException;
+import com.gem.nrserver.service.util.ModelAndDTOMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by kimtung on 2/18/16.
@@ -27,34 +35,27 @@ public class UserServiceImpl implements UserService {
     private static Logger log = Logger.getLogger(UserServiceImpl.class.getName());
 
     @Autowired
-    private UserDao userDao;
-
-    @Override
-    public List<User> list() {
-        return userDao.list();
-    }
-
-    @Override
-    public User findByUsername(String username) {
-        return userDao.findByUsername(username);
-    }
+    private UserRepository userRepository;
 
     @Override
     public boolean isUsernameAvailable(String username) {
-        return userDao.isUsernameAvailable(username);
+        return userRepository.isUsernameAvailable(username);
     }
 
-    public void register(User user) throws IllegalArgumentException {
-        if(!userDao.isUsernameAvailable(user.getUsername())) {
-            throw new IllegalArgumentException("username already exists");
+    @Override
+    public List<ProductDTO> listPurchasedProduct(String userId) throws Exception{
+        User user = userRepository.findOne(userId);
+        if(user == null) throw new UserNotFoundException();
+        List<ProductDTO> purchasedProducts = new ArrayList<>();
+        for (Invoice invoice: user.getInvoices()) {
+            purchasedProducts.addAll(invoice.getInvoiceDetails().stream().map(detail -> ModelAndDTOMapper.productModelToDTO(detail.getProduct())).collect(Collectors.toList()));
         }
-        log.info("user: " + user.getUsername() + " successfully registered");
-        userDao.persit(user);
+        return purchasedProducts;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.findByUsername(username);
+        User user = userRepository.findOne(username);
         List<GrantedAuthority> authorities = buildUserAuthorities(user.getRoles());
         return buildUserForAuthentication(user, authorities);
     }
@@ -65,10 +66,55 @@ public class UserServiceImpl implements UserService {
     }
 
     private List<GrantedAuthority> buildUserAuthorities(Set<UserRole> userRoles) {
-        Set<GrantedAuthority> authorities = new HashSet<>();
-        for (UserRole role: userRoles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRole()));
-        }
+        Set<GrantedAuthority> authorities = userRoles.stream().map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toSet());
         return new ArrayList<>(authorities);
+    }
+
+    @Override
+    public Long count() {
+        return userRepository.count();
+    }
+
+    @Override
+    public boolean exists(String s) {
+        return userRepository.exists(s);
+    }
+
+    @Override
+    public String save(UserDTO dto) throws Exception {
+        if(!userRepository.isUsernameAvailable(dto.getUsername()))
+            throw new IllegalArgumentException("username is not available");
+        return userRepository.save(ModelAndDTOMapper.userDTOtoModel(dto)).getUsername();
+    }
+
+    @Override
+    public void update(UserDTO dto) throws Exception {
+
+    }
+
+    @Override
+    public UserDTO findOne(String s) throws Exception {
+        return ModelAndDTOMapper.userModelToDTO(userRepository.findOne(s));
+    }
+
+    @Override
+    public List<UserDTO> findAll() {
+        Iterable<User> users = userRepository.findAll();
+        List<UserDTO> userDTOs = new ArrayList<>();
+        for (User user : users) {
+            userDTOs.add(ModelAndDTOMapper.userModelToDTO(user));
+        }
+        return userDTOs;
+    }
+
+    @Override
+    public Page<UserDTO> findAll(Pageable pageable) {
+        Page<User> userPage = userRepository.findAll(pageable);
+        return userPage.map(ModelAndDTOMapper::userModelToDTO);
+    }
+
+    @Override
+    public void delete(String s) throws Exception {
+        userRepository.delete(s);
     }
 }

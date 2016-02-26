@@ -1,9 +1,9 @@
-package com.gem.nrserver.restful.dto;
+package com.gem.nrserver.service.dto;
 
 /**
  * Created by kimtung on 2/17/16.
  */
-public class UserInfo {
+public class UserAuthenticationInfo {
 
     public String username;
     public String password;
@@ -35,7 +35,7 @@ public class UserInfo {
 
     @Override
     public String toString() {
-        return "UserInfo{" +
+        return "UserAuthenticationInfo{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", deviceId='" + deviceId + '\'' +

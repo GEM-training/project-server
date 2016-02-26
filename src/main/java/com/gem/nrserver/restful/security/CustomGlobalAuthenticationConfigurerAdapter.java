@@ -29,7 +29,6 @@ public class CustomGlobalAuthenticationConfigurerAdapter extends GlobalAuthentic
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder;
+        return new BCryptPasswordEncoder();
     }
 }

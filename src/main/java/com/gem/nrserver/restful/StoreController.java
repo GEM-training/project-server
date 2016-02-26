@@ -1,9 +1,9 @@
 package com.gem.nrserver.restful;
 
 import com.gem.nrserver.service.StoreService;
-import com.gem.nrserver.service.dto.Product;
-import com.gem.nrserver.service.dto.Store;
-import com.gem.nrserver.service.dto.User;
+import com.gem.nrserver.service.dto.ProductDTO;
+import com.gem.nrserver.service.dto.StoreDTO;
+import com.gem.nrserver.service.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,18 +20,18 @@ public class StoreController {
     private StoreService storeService;
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
-    public Page<Store> list(Pageable pageable) {
+    public Page<StoreDTO> list(Pageable pageable) {
         return storeService.findAll(pageable);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json")
-    public void create(@RequestBody Store store) throws Exception {
-        storeService.save(store);
+    public void create(@RequestBody StoreDTO storeDTO) throws Exception {
+        storeService.save(storeDTO);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, consumes = "application/json")
-    public void update(@RequestBody Store store) throws Exception {
-        storeService.update(store);
+    public void update(@RequestBody StoreDTO storeDTO) throws Exception {
+        storeService.update(storeDTO);
     }
 
     @RequestMapping(value = "", method=RequestMethod.DELETE)
@@ -40,12 +40,12 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-    public Store getById(@PathVariable(value = "id") long id) throws Exception {
+    public StoreDTO getById(@PathVariable(value = "id") long id) throws Exception {
         return storeService.findOne(id);
     }
 
     @RequestMapping(value = "/{id}/staff", method = RequestMethod.GET, produces = "application/json")
-    public Page<User> listStaffs(@PathVariable(value = "id") Long storeId, Pageable pageable) throws Exception {
+    public Page<UserDTO> listStaffs(@PathVariable(value = "id") Long storeId, Pageable pageable) throws Exception {
         return storeService.listStaffs(storeId, pageable);
     }
 
@@ -56,7 +56,7 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/{id}/product", method = RequestMethod.GET, produces = "application/json")
-    public List<Product> listProducts(@PathVariable(value = "id") Long storeId, Pageable pageable) throws Exception {
+    public List<ProductDTO> listProducts(@PathVariable(value = "id") Long storeId, Pageable pageable) throws Exception {
         return storeService.listProducts(storeId);
     }
 
@@ -67,7 +67,7 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/{id}/customer", method = RequestMethod.GET, produces = "application/json")
-    public Page<User> listCustomers(@PathVariable(value = "id") Long storeId, Pageable pageable) throws Exception {
+    public Page<UserDTO> listCustomers(@PathVariable(value = "id") Long storeId, Pageable pageable) throws Exception {
         return storeService.listCustomers(storeId, pageable);
     }
 

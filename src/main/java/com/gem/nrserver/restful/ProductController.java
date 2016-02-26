@@ -1,7 +1,7 @@
 package com.gem.nrserver.restful;
 
 import com.gem.nrserver.service.ProductService;
-import com.gem.nrserver.service.dto.Product;
+import com.gem.nrserver.service.dto.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,18 +18,18 @@ public class ProductController {
     private ProductService productService;
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
-    public Page<Product> list(Pageable pageable) {
+    public Page<ProductDTO> list(Pageable pageable) {
         return productService.findAll(pageable);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = "application/json")
-    public void create(@RequestBody Product product) throws Exception {
-        productService.save(product);
+    public void create(@RequestBody ProductDTO productDTO) throws Exception {
+        productService.save(productDTO);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, consumes = "application/json")
-    public void update(@RequestBody Product product) throws Exception {
-        productService.update(product);
+    public void update(@RequestBody ProductDTO productDTO) throws Exception {
+        productService.update(productDTO);
     }
 
     @RequestMapping(value = "", method=RequestMethod.DELETE)
@@ -38,7 +38,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-    public Product getById(@PathVariable(value = "id") long id) throws Exception {
+    public ProductDTO getById(@PathVariable(value = "id") long id) throws Exception {
         return productService.findOne(id);
     }
 }

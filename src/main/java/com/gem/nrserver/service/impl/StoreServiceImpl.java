@@ -4,10 +4,10 @@ import com.gem.nrserver.persistent.model.ProductStore;
 import com.gem.nrserver.persistent.repository.ProductRepository;
 import com.gem.nrserver.persistent.repository.StoreRepository;
 import com.gem.nrserver.service.StoreService;
-import com.gem.nrserver.service.util.ModelDtoMapper;
-import com.gem.nrserver.service.dto.Product;
-import com.gem.nrserver.service.dto.Store;
-import com.gem.nrserver.service.dto.User;
+import com.gem.nrserver.service.dto.StoreDTO;
+import com.gem.nrserver.service.dto.UserDTO;
+import com.gem.nrserver.service.util.ModelAndDTOMapper;
+import com.gem.nrserver.service.dto.ProductDTO;
 import com.gem.nrserver.service.exception.ResourceNotFoundException;
 import com.gem.nrserver.service.exception.StoreNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,39 +32,39 @@ public class StoreServiceImpl implements StoreService {
     private ProductRepository productRepository;
 
     @Override
-    public List<User> listStaffs(Long storeId) {
+    public List<UserDTO> listStaffs(Long storeId) {
         return null;
     }
 
     @Override
-    public Page<User> listStaffs(Long storeId, Pageable pageable) {
+    public Page<UserDTO> listStaffs(Long storeId, Pageable pageable) {
         return null;
     }
 
     @Override
-    public List<Product> listProducts(Long storeId) throws Exception {
+    public List<ProductDTO> listProducts(Long storeId) throws Exception {
         com.gem.nrserver.persistent.model.Store store = storeRepository.findOne(storeId);
         if(store == null) throw new StoreNotFoundException();
         Set<ProductStore> productSet = store.getProductStores();
-        ArrayList<Product> products = new ArrayList<Product>();
+        ArrayList<ProductDTO> products = new ArrayList<ProductDTO>();
         for (ProductStore product: productSet) {
-            products.add(ModelDtoMapper.productModelToDTO(product.getProduct()));
+            products.add(ModelAndDTOMapper.productModelToDTO(product.getProduct()));
         }
         return products;
     }
 
     @Override
-    public Page<User> listProducts(Long storeId, Pageable pageable) {
+    public Page<UserDTO> listProducts(Long storeId, Pageable pageable) {
         return null;
     }
 
     @Override
-    public List<User> listCustomers(Long storeId) {
+    public List<UserDTO> listCustomers(Long storeId) {
         return null;
     }
 
     @Override
-    public Page<User> listCustomers(Long storeId, Pageable pageable) {
+    public Page<UserDTO> listCustomers(Long storeId, Pageable pageable) {
         return null;
     }
 
@@ -89,12 +89,12 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Long save(Store dto) {
-        return storeRepository.save(ModelDtoMapper.storeDTOtoModel(dto)).getId();
+    public Long save(StoreDTO dto) {
+        return storeRepository.save(ModelAndDTOMapper.storeDTOtoModel(dto)).getId();
     }
 
     @Override
-    public void update(Store dto) {
+    public void update(StoreDTO dto) {
         com.gem.nrserver.persistent.model.Store store = storeRepository.findOne(dto.getId());
         store.setName(dto.getName());
         store.setDescription(dto.getDescription());
@@ -102,29 +102,29 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Store findOne(Long id) throws ResourceNotFoundException {
+    public StoreDTO findOne(Long id) throws ResourceNotFoundException {
         com.gem.nrserver.persistent.model.Store store = storeRepository.findOne(id);
         if(store == null) throw new StoreNotFoundException();
-        return ModelDtoMapper.storeModeltoDTO(store);
+        return ModelAndDTOMapper.storeModeltoDTO(store);
     }
 
     @Override
-    public List<Store> findAll() {
+    public List<StoreDTO> findAll() {
         Iterable<com.gem.nrserver.persistent.model.Store> stores = storeRepository.findAll();
-        ArrayList<Store> storeDTOs = new ArrayList<Store>();
+        ArrayList<StoreDTO> storeDTOs = new ArrayList<StoreDTO>();
         for(com.gem.nrserver.persistent.model.Store store: stores){
-            storeDTOs.add(ModelDtoMapper.storeModeltoDTO(store));
+            storeDTOs.add(ModelAndDTOMapper.storeModeltoDTO(store));
         }
         return storeDTOs;
     }
 
     @Override
-    public Page<Store> findAll(Pageable pageable) {
+    public Page<StoreDTO> findAll(Pageable pageable) {
         Page<com.gem.nrserver.persistent.model.Store> stores = storeRepository.findAll(pageable);
-        return stores.map(new Converter<com.gem.nrserver.persistent.model.Store, Store>() {
+        return stores.map(new Converter<com.gem.nrserver.persistent.model.Store, StoreDTO>() {
             @Override
-            public Store convert(com.gem.nrserver.persistent.model.Store source) {
-                return ModelDtoMapper.storeModeltoDTO(source);
+            public StoreDTO convert(com.gem.nrserver.persistent.model.Store source) {
+                return ModelAndDTOMapper.storeModeltoDTO(source);
             }
         });
     }

@@ -2,6 +2,7 @@ package com.gem.nrserver.restful.security;
 
 import com.gem.nrserver.persistent.model.User;
 import com.gem.nrserver.service.AuthenticationService;
+import com.gem.nrserver.service.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,7 +38,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             String token = httpServletRequest.getHeader("token");
             if(authenticationService.isAuthenticated(token)) {
-                User user = authenticationService.getUserFromToken(token);
+                UserDTO user = authenticationService.getUserFromToken(token);
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) request));

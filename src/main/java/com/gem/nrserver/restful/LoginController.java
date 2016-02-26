@@ -3,10 +3,11 @@ package com.gem.nrserver.restful;
 import com.gem.nrserver.persistent.model.User;
 import com.gem.nrserver.restful.dto.ResponseDTO;
 import com.gem.nrserver.restful.dto.ResponseUserInfo;
-import com.gem.nrserver.restful.dto.UserInfo;
+import com.gem.nrserver.service.dto.UserAuthenticationInfo;
 import com.gem.nrserver.service.AuthenticationService;
 import com.gem.nrserver.service.UserRoleService;
 import com.gem.nrserver.service.UserService;
+import com.gem.nrserver.service.dto.UserDTO;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,27 +39,17 @@ public class LoginController {
     private AuthenticationService authenticationService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<String> register(@RequestBody UserInfo userInfo) {
-        User user = new User();
-        user.setUsername(userInfo.username);
-        user.setPassword(userInfo.password);
-        user.setEnabled(true);
-        try {
-            userService.register(user);
-        } catch (Exception e) {
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<String>(HttpStatus.OK);
+    public void register(@RequestBody UserDTO userDTO) throws Exception {
+        userService.save(userDTO);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseDTO login(HttpSession httpSession, @RequestBody UserInfo userInfo) {
-        Gson gson = new Gson();
+    public ResponseDTO login(HttpSession httpSession, @RequestBody UserAuthenticationInfo userAuthenticationInfo) throws Exception {
         try {
-            String token = authenticationService.authenticate(userInfo.username, userInfo.password, userInfo.deviceId);
+            String token = authenticationService.authenticate(userAuthenticationInfo.username, userAuthenticationInfo.password, userAuthenticationInfo.deviceId);
             ResponseUserInfo responseUserInfo = new ResponseUserInfo();
-            responseUserInfo.setUsername(userInfo.getUsername());
-            responseUserInfo.setRole(userRoleService.findByUsername(userInfo.getUsername()));
+            responseUserInfo.setUsername(userAuthenticationInfo.getUsername());
+            responseUserInfo.setRole(userRoleService.findByUsername(userAuthenticationInfo.getUsername()));
             responseUserInfo.setToken(token);
 
             return new ResponseDTO(HttpStatus.OK.value(),null,responseUserInfo);

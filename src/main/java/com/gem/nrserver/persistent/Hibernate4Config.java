@@ -47,8 +47,7 @@ public class Hibernate4Config {
     @Bean
     @Autowired
     public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager txManager = new HibernateTransactionManager(sessionFactory);
-        return txManager;
+        return new HibernateTransactionManager(sessionFactory);
     }
 
 

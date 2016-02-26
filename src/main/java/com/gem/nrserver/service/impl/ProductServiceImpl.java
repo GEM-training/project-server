@@ -2,9 +2,9 @@ package com.gem.nrserver.service.impl;
 
 import com.gem.nrserver.persistent.repository.ProductRepository;
 import com.gem.nrserver.service.ProductService;
+import com.gem.nrserver.service.dto.ProductDTO;
 import com.gem.nrserver.service.exception.ProductNotFoundException;
-import com.gem.nrserver.service.util.ModelDtoMapper;
-import com.gem.nrserver.service.dto.Product;
+import com.gem.nrserver.service.util.ModelAndDTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
@@ -34,12 +34,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Long save(Product dto) {
-        return productRepository.save(ModelDtoMapper.productDTOtoModel(dto)).getId();
+    public Long save(ProductDTO dto) {
+        return productRepository.save(ModelAndDTOMapper.productDTOtoModel(dto)).getId();
     }
 
     @Override
-    public void update(Product dto) {
+    public void update(ProductDTO dto) {
         com.gem.nrserver.persistent.model.Product product = productRepository.findOne(dto.getId());
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
@@ -47,31 +47,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findOne(Long id) throws ProductNotFoundException {
+    public ProductDTO findOne(Long id) throws ProductNotFoundException {
         com.gem.nrserver.persistent.model.Product product = productRepository.findOne(id);
         if(product == null) throw new ProductNotFoundException();
-        return ModelDtoMapper.productModelToDTO(product);
+        return ModelAndDTOMapper.productModelToDTO(product);
     }
 
     @Override
-    public List<Product> findAll() {
+    public List<ProductDTO> findAll() {
         Iterable<com.gem.nrserver.persistent.model.Product> products = productRepository.findAll();
-        ArrayList<Product> productDTOs = new ArrayList<Product>();
+        ArrayList<ProductDTO> productDTOs = new ArrayList<ProductDTO>();
         for(com.gem.nrserver.persistent.model.Product product : products){
-            productDTOs.add(ModelDtoMapper.productModelToDTO(product));
+            productDTOs.add(ModelAndDTOMapper.productModelToDTO(product));
         }
         return productDTOs;
     }
 
     @Override
-    public Page<Product> findAll(Pageable pageable) {
+    public Page<ProductDTO> findAll(Pageable pageable) {
         Page<com.gem.nrserver.persistent.model.Product> products = productRepository.findAll(pageable);
-        return products.map(new Converter<com.gem.nrserver.persistent.model.Product, Product>() {
-            @Override
-            public Product convert(com.gem.nrserver.persistent.model.Product source) {
-                return ModelDtoMapper.productModelToDTO(source);
-            }
-        });
+        return products.map(ModelAndDTOMapper::productModelToDTO);
     }
 
     @Override

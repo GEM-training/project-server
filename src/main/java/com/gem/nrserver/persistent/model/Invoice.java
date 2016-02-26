@@ -17,6 +17,7 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoice_id_seq")
     @Column(name = "id", nullable = false, unique = true)
     private long id;
+
     @Column(name = "created_date")
     private Date createdDate;
 
@@ -85,4 +86,11 @@ public class Invoice {
         this.customer = customer;
     }
 
+    public Set<InvoiceDetail> getInvoiceDetails() {
+        return invoiceDetails;
+    }
+
+    public void setInvoiceDetails(Set<InvoiceDetail> invoiceDetails) {
+        this.invoiceDetails = invoiceDetails;
+    }
 }
