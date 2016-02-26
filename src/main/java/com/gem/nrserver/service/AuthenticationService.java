@@ -1,7 +1,6 @@
 package com.gem.nrserver.service;
 
 
-import com.gem.nrserver.persistent.model.User;
 import com.gem.nrserver.service.dto.UserDTO;
 
 /**

@@ -1,7 +1,6 @@
 package com.gem.nrserver.persistent.repository;
 
 import com.gem.nrserver.persistent.model.PersistentLogin;
-import com.gem.nrserver.persistent.model.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

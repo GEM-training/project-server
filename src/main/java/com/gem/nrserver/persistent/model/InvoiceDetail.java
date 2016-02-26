@@ -1,14 +1,10 @@
 package com.gem.nrserver.persistent.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by qsoft on 2/22/16.
- */
+
 @Entity
 @Table(name = "invoice_detail")
 @IdClass(InvoiceDetail.Id.class)
@@ -57,7 +53,6 @@ public class InvoiceDetail {
         this.quantity = quantity;
     }
 
-
     public Product getProduct() {
         return product;
     }
@@ -86,8 +81,7 @@ public class InvoiceDetail {
 
             Id id = (Id) o;
 
-            if (!product.equals(id.product)) return false;
-            return invoice.equals(id.invoice);
+            return product.equals(id.product) && invoice.equals(id.invoice);
 
         }
 

@@ -4,10 +4,6 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
-/**
- * Created by qsoft on 2/22/16.
- */
-
 @Entity
 @Table(name = "store")
 public class Store {

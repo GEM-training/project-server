@@ -1,13 +1,11 @@
 package com.gem.nrserver.service.impl;
 
-import com.gem.nrserver.persistent.model.Invoice;
 import com.gem.nrserver.persistent.model.User;
 import com.gem.nrserver.persistent.model.UserRole;
 import com.gem.nrserver.persistent.repository.UserRepository;
 import com.gem.nrserver.service.UserService;
 import com.gem.nrserver.service.dto.ProductDTO;
 import com.gem.nrserver.service.dto.UserDTO;
-import com.gem.nrserver.service.exception.UserNotFoundException;
 import com.gem.nrserver.service.util.ModelAndDTOMapper;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

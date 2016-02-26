@@ -2,9 +2,6 @@ package com.gem.nrserver.persistent.model;
 
 import javax.persistence.*;
 
-/**
- * Created by kimtung on 2/17/16.
- */
 @Entity
 @Table(name = "user_roles")
 public class UserRole {

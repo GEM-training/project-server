@@ -23,7 +23,7 @@ import java.security.MessageDigest;
 @Transactional
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private static Logger log = Logger.getLogger(AuthenticationServiceImpl.class.getName());
+    private static final Logger log = Logger.getLogger(AuthenticationServiceImpl.class.getName());
 
     @Autowired
     private PersistentLoginRepository persistentLoginRepository;
@@ -80,9 +80,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             byte byteData[] = md.digest();
 
             // convert the byte to hex format method 1
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < byteData.length; i++) {
-                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16)
+            StringBuilder sb = new StringBuilder();
+            for (byte aByteData : byteData) {
+                sb.append(Integer.toString((aByteData & 0xff) + 0x100, 16)
                         .substring(1));
             }
 

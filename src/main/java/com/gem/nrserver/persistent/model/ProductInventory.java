@@ -4,9 +4,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by qsoft on 2/22/16.
- */
 @Entity
 @Table(name = "product_inventory")
 @IdClass(ProductInventory.Id.class)
@@ -83,8 +80,7 @@ public class ProductInventory {
 
             Id id = (Id) o;
 
-            if (!product.equals(id.product)) return false;
-            return inventory.equals(id.inventory);
+            return product.equals(id.product) && inventory.equals(id.inventory);
 
         }
 

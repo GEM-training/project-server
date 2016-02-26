@@ -1,6 +1,5 @@
 package com.gem.nrserver.restful;
 
-import com.gem.nrserver.persistent.model.User;
 import com.gem.nrserver.restful.dto.ResponseDTO;
 import com.gem.nrserver.restful.dto.ResponseUserInfo;
 import com.gem.nrserver.service.dto.UserAuthenticationInfo;
@@ -8,11 +7,9 @@ import com.gem.nrserver.service.AuthenticationService;
 import com.gem.nrserver.service.UserRoleService;
 import com.gem.nrserver.service.UserService;
 import com.gem.nrserver.service.dto.UserDTO;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

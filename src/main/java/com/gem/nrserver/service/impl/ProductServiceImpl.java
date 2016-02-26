@@ -6,7 +6,6 @@ import com.gem.nrserver.service.dto.ProductDTO;
 import com.gem.nrserver.service.exception.ProductNotFoundException;
 import com.gem.nrserver.service.util.ModelAndDTOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -56,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDTO> findAll() {
         Iterable<com.gem.nrserver.persistent.model.Product> products = productRepository.findAll();
-        ArrayList<ProductDTO> productDTOs = new ArrayList<ProductDTO>();
+        ArrayList<ProductDTO> productDTOs = new ArrayList<>();
         for(com.gem.nrserver.persistent.model.Product product : products){
             productDTOs.add(ModelAndDTOMapper.productModelToDTO(product));
         }

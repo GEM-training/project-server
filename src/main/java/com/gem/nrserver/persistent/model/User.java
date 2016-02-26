@@ -1,13 +1,8 @@
 package com.gem.nrserver.persistent.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Set;
 
-/**
- * Created by kimtung on 2/17/16.
- */
 @Entity
 @Table(name = "users")
 public class User {
@@ -26,7 +21,7 @@ public class User {
     private Set<UserRole> roles;
 
     @OneToMany(mappedBy = "customer", fetch =  FetchType.LAZY)
-    Set<Invoice> invoices;
+    private Set<Invoice> invoices;
 
     @ManyToOne
     @JoinColumn(name = "store_id", referencedColumnName = "id")

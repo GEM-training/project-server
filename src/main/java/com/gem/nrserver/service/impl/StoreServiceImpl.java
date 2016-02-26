@@ -1,7 +1,5 @@
 package com.gem.nrserver.service.impl;
 
-import com.gem.nrserver.persistent.model.Product;
-import com.gem.nrserver.persistent.model.ProductStore;
 import com.gem.nrserver.persistent.repository.ProductRepository;
 import com.gem.nrserver.persistent.repository.StoreRepository;
 import com.gem.nrserver.service.StoreService;
@@ -20,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -32,10 +29,6 @@ public class StoreServiceImpl implements StoreService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Override
-    public List<UserDTO> listStaffs(Long storeId) {
-        return null;
-    }
 
     @Override
     public Page<UserDTO> listStaffs(Long storeId, Pageable pageable) {
@@ -43,25 +36,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public List<ProductDTO> listProducts(Long storeId) throws Exception {
-        com.gem.nrserver.persistent.model.Store store = storeRepository.findOne(storeId);
-        if(store == null) throw new StoreNotFoundException();
-        Set<ProductStore> productSet = store.getProductStores();
-        ArrayList<ProductDTO> products = new ArrayList<ProductDTO>();
-        for (ProductStore product: productSet) {
-            products.add(ModelAndDTOMapper.productModelToDTO(product.getProduct()));
-        }
-        return products;
-    }
-
-    @Override
     public Page<ProductDTO> listProducts(Long storeId, Pageable pageable) {
         return storeRepository.listProducts(storeId, pageable).map(ModelAndDTOMapper::productModelToDTO);
-    }
-
-    @Override
-    public List<UserDTO> listCustomers(Long storeId) {
-        return null;
     }
 
     @Override
@@ -112,7 +88,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public List<StoreDTO> findAll() {
         Iterable<com.gem.nrserver.persistent.model.Store> stores = storeRepository.findAll();
-        ArrayList<StoreDTO> storeDTOs = new ArrayList<StoreDTO>();
+        ArrayList<StoreDTO> storeDTOs = new ArrayList<>();
         for(com.gem.nrserver.persistent.model.Store store: stores){
             storeDTOs.add(ModelAndDTOMapper.storeModeltoDTO(store));
         }
@@ -122,12 +98,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Page<StoreDTO> findAll(Pageable pageable) {
         Page<com.gem.nrserver.persistent.model.Store> stores = storeRepository.findAll(pageable);
-        return stores.map(new Converter<com.gem.nrserver.persistent.model.Store, StoreDTO>() {
-            @Override
-            public StoreDTO convert(com.gem.nrserver.persistent.model.Store source) {
-                return ModelAndDTOMapper.storeModeltoDTO(source);
-            }
-        });
+        return stores.map(ModelAndDTOMapper::storeModeltoDTO);
     }
 
     @Override

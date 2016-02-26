@@ -1,6 +1,5 @@
 package com.gem.nrserver.service;
 
-import com.gem.nrserver.service.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -15,11 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * Created by kimtung on 2/17/16.
  */
 @Configuration
-@ComponentScan(basePackages = "com.gem.usrmgr.service")
+@ComponentScan(basePackages = "com.gem.nrserver.service")
 public class CustomGlobalAuthenticationConfigurerAdapter extends GlobalAuthenticationConfigurerAdapter {
 
     @Autowired
-    @Qualifier("service_user")
     private UserDetailsService userService;
 
     @Override

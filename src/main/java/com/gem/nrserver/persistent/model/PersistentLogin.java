@@ -5,9 +5,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * Created by kimtung on 2/17/16.
- */
 @Entity
 @Table(
         name = "persistent_logins",

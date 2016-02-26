@@ -1,6 +1,5 @@
 package com.gem.nrserver.restful.security;
 
-import com.gem.nrserver.persistent.model.User;
 import com.gem.nrserver.service.AuthenticationService;
 import com.gem.nrserver.service.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,6 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        Map<String, String[]> parms = request.getParameterMap();
         if(request instanceof HttpServletRequest) {
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             String token = httpServletRequest.getHeader("token");

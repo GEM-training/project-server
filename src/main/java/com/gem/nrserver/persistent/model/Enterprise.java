@@ -1,14 +1,9 @@
 package com.gem.nrserver.persistent.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
-/**
- * Created by qsoft on 2/22/16.
- */
 @Entity
 @Table(name = "enterprise")
 public class Enterprise {
@@ -33,7 +28,7 @@ public class Enterprise {
     private String description;
 
     @OneToMany(mappedBy = "enterprise", fetch = FetchType.LAZY)
-    Set<Company> companies;
+    private Set<Company> companies;
 
 
     public Set<Company> getCompanies() {

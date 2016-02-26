@@ -1,15 +1,12 @@
 package com.gem.nrserver.restful.dto;
 
-import com.sun.org.apache.regexp.internal.RE;
-import org.springframework.http.HttpStatus;
-
 /**
  * Created by quanda on 19/02/2016.
  */
 public class ResponseDTO {
-    Integer statusCode;
-    String message;
-    Object returnObject;
+    private Integer statusCode;
+    private String message;
+    private Object returnObject;
 
     public ResponseDTO() {}
 

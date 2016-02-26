@@ -13,7 +13,7 @@ import java.io.IOException;
  * Created by kimtung on 2/17/16.
  */
 @Component
-public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED);

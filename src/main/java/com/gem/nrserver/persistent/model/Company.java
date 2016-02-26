@@ -1,20 +1,14 @@
 package com.gem.nrserver.persistent.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
-/**
- * Created by qsoft on 2/22/16.
- */
 @Entity
 @Table(name = "company")
-
 public class Company {
     @Id
-    @SequenceGenerator(name = "company_id_seq", sequenceName = "company_seq_id", initialValue = 1, allocationSize  =1)
+    @SequenceGenerator(name = "company_id_seq", sequenceName = "company_seq_id", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "company_id_seq")
     @Column(name = "company_id", nullable = false, unique = true)
     private long id;
@@ -34,7 +28,7 @@ public class Company {
     @Column(name = "description")
 
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
-    Set<Store> setStores;
+    private Set<Store> setStores;
 
     @ManyToOne
     @JoinColumn(name = "enterprise_id")
