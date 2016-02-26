@@ -56,8 +56,8 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/{id}/product", method = RequestMethod.GET, produces = "application/json")
-    public List<ProductDTO> listProducts(@PathVariable(value = "id") Long storeId, Pageable pageable) throws Exception {
-        return storeService.listProducts(storeId);
+    public Page<ProductDTO> listProducts(@PathVariable(value = "id") Long storeId, Pageable pageable) throws Exception {
+        return storeService.listProducts(storeId, pageable);
     }
 
     @RequestMapping(value = "/{id}/product", method = RequestMethod.POST)

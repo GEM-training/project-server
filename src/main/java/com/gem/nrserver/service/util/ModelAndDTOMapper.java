@@ -21,6 +21,7 @@ public class ModelAndDTOMapper {
 
     public static StoreDTO storeModeltoDTO(com.gem.nrserver.persistent.model.Store model) {
         StoreDTO dto = new StoreDTO();
+        dto.setId(model.getId());
         dto.setName(model.getName());
         dto.setAddress(model.getAddress());
         dto.setDescription(model.getDescription());

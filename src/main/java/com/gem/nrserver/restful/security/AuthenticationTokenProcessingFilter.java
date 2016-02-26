@@ -37,7 +37,7 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
         if(request instanceof HttpServletRequest) {
             HttpServletRequest httpServletRequest = (HttpServletRequest) request;
             String token = httpServletRequest.getHeader("token");
-            if(authenticationService.isAuthenticated(token)) {
+            if(token != null && authenticationService.isAuthenticated(token)) {
                 UserDTO user = authenticationService.getUserFromToken(token);
                 if(user != null) {
                     UsernamePasswordAuthenticationToken authenticationToken =

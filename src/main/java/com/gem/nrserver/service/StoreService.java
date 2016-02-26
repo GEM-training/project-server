@@ -16,7 +16,7 @@ public interface StoreService extends AbstractService<StoreDTO, Long> {
     List<UserDTO> listStaffs(Long storeId) throws Exception;
     Page<UserDTO> listStaffs(Long storeId, Pageable pageable) throws Exception;
     List<ProductDTO> listProducts(Long storeId) throws Exception;
-    Page<UserDTO> listProducts(Long storeId, Pageable pageable) throws Exception;
+    Page<ProductDTO> listProducts(Long storeId, Pageable pageable) throws Exception;
     List<UserDTO> listCustomers(Long storeId) throws Exception;
     Page<UserDTO> listCustomers(Long storeId, Pageable pageable) throws Exception;
     void assignStaff(Long storeId, String userId) throws Exception;

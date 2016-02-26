@@ -1,5 +1,6 @@
 package com.gem.nrserver.service.impl;
 
+import com.gem.nrserver.persistent.model.Product;
 import com.gem.nrserver.persistent.model.ProductStore;
 import com.gem.nrserver.persistent.repository.ProductRepository;
 import com.gem.nrserver.persistent.repository.StoreRepository;
@@ -54,8 +55,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Page<UserDTO> listProducts(Long storeId, Pageable pageable) {
-        return null;
+    public Page<ProductDTO> listProducts(Long storeId, Pageable pageable) {
+        return storeRepository.listProducts(storeId, pageable).map(ModelAndDTOMapper::productModelToDTO);
     }
 
     @Override

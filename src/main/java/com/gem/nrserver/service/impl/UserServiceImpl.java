@@ -43,14 +43,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ProductDTO> listPurchasedProduct(String userId) throws Exception{
-        User user = userRepository.findOne(userId);
-        if(user == null) throw new UserNotFoundException();
-        List<ProductDTO> purchasedProducts = new ArrayList<>();
-        for (Invoice invoice: user.getInvoices()) {
-            purchasedProducts.addAll(invoice.getInvoiceDetails().stream().map(detail -> ModelAndDTOMapper.productModelToDTO(detail.getProduct())).collect(Collectors.toList()));
-        }
-        return purchasedProducts;
+    public Page<ProductDTO> listPurchasedProduct(String userId, Pageable pageable) throws Exception{
+        return userRepository.listPurchasedProduct(userId, pageable).map(ModelAndDTOMapper::productModelToDTO);
     }
 
     @Override
