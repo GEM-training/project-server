@@ -2,7 +2,7 @@ package com.gem.nrserver.service.impl;
 
 import com.gem.nrserver.persistent.model.PersistentLogin;
 import com.gem.nrserver.persistent.model.User;
-import com.gem.nrserver.persistent.repository.PersistentLoginDao;
+import com.gem.nrserver.persistent.repository.PersistentLoginRepository;
 import com.gem.nrserver.persistent.repository.UserRepository;
 import com.gem.nrserver.service.AuthenticationService;
 import com.gem.nrserver.service.dto.UserDTO;
@@ -26,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private static Logger log = Logger.getLogger(AuthenticationServiceImpl.class.getName());
 
     @Autowired
-    private PersistentLoginDao persistentLoginDao;
+    private PersistentLoginRepository persistentLoginRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -35,7 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public String authenticate(String username, String password, String deviceId) throws Exception {
         User user = userRepository.findOne(username);
         if(user == null) throw new UserNotFoundException();
-        String token = persistentLoginDao.getToken(username, deviceId);
+        String token = persistentLoginRepository.getToken(username, deviceId);
         if(token != null) {
             return token;
         } else {
@@ -44,31 +44,32 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             persistentLogin.setUsername(user.getUsername());
             persistentLogin.setToken(token);
             persistentLogin.setDeviceId(deviceId);
-            persistentLoginDao.persit(persistentLogin);
+            persistentLoginRepository.save(persistentLogin);
         }
         return token;
     }
 
     @Override
     public String getToken(String username, String deviceId) {
-        return persistentLoginDao.getToken(username, deviceId);
+        return persistentLoginRepository.getToken(username, deviceId);
     }
 
     @Override
     public boolean isAuthenticated(String token) {
-        return persistentLoginDao.validate(token);
+        return persistentLoginRepository.validate(token);
     }
 
     @Override
     public UserDTO getUserFromToken(String token) {
-        String username = persistentLoginDao.getUsernameFromToken(token);
+        String username = persistentLoginRepository.getUsernameFromToken(token);
+        if(username == null) return null;
         return ModelAndDTOMapper.userModelToDTO(userRepository.findOne(username));
     }
 
     @Override
     public void deauthenticate(String token) {
         log.info("deauthenticate token " + token);
-        persistentLoginDao.deleteByToken(token);
+        persistentLoginRepository.deleteByToken(token);
     }
 
     private String convertStringToMD5(String string) {

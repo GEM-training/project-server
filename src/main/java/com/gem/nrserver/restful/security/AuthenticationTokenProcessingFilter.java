@@ -39,11 +39,12 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
             String token = httpServletRequest.getHeader("token");
             if(authenticationService.isAuthenticated(token)) {
                 UserDTO user = authenticationService.getUserFromToken(token);
-                System.err.println("USERRRRRRRRRRRRRRRR: " + user.getUsername());
-                UsernamePasswordAuthenticationToken authenticationToken =
-                        new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(authenticationToken));
+                if(user != null) {
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                            new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails((HttpServletRequest) request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(authenticationToken));
+                }
             }
         }
         chain.doFilter(request, response);
