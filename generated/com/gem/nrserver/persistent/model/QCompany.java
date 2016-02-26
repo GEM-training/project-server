@@ -34,7 +34,7 @@ public class QCompany extends EntityPathBase<Company> {
 
     public final StringPath name = createString("name");
 
-    public final SetPath<Store, QStore> setStores = this.<Store, QStore>createSet("setStores", Store.class, QStore.class, PathInits.DIRECT2);
+    public final SetPath<Store, QStore> stores = this.<Store, QStore>createSet("stores", Store.class, QStore.class, PathInits.DIRECT2);
 
     public final DateTimePath<java.util.Date> updatedDate = createDateTime("updatedDate", java.util.Date.class);
 

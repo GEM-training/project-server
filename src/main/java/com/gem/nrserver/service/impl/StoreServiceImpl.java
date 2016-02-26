@@ -37,7 +37,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Page<ProductDTO> listProducts(Long storeId, Pageable pageable) {
-        return storeRepository.listProducts(storeId, pageable).map(ModelAndDTOMapper::productModelToDTO);
+        return productRepository.listProductsInStore(storeId, pageable).map(ModelAndDTOMapper::productModelToDTO);
     }
 
     @Override

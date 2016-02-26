@@ -2,6 +2,7 @@ package com.gem.nrserver.service.impl;
 
 import com.gem.nrserver.persistent.model.User;
 import com.gem.nrserver.persistent.model.UserRole;
+import com.gem.nrserver.persistent.repository.ProductRepository;
 import com.gem.nrserver.persistent.repository.UserRepository;
 import com.gem.nrserver.service.UserService;
 import com.gem.nrserver.service.dto.ProductDTO;
@@ -35,6 +36,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @Override
     public boolean isUsernameAvailable(String username) {
         return userRepository.isUsernameAvailable(username);
@@ -42,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<ProductDTO> listPurchasedProduct(String userId, Pageable pageable) throws Exception{
-        return userRepository.listPurchasedProduct(userId, pageable).map(ModelAndDTOMapper::productModelToDTO);
+        return productRepository.listProductPurchasedByUser(userId, pageable).map(ModelAndDTOMapper::productModelToDTO);
     }
 
     @Override

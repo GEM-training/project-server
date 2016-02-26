@@ -13,7 +13,4 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface StoreRepository extends PagingAndSortingRepository<Store, Long>, QueryDslPredicateExecutor<Store> {
 
-    @Query("select p from Product p where p.id in (select ps.product.id from ProductStore ps where ps.store.id = ?)")
-    Page<Product> listProducts(Long storeId, Pageable pageable);
-
 }

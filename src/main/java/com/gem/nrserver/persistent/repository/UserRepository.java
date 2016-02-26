@@ -17,7 +17,4 @@ public interface UserRepository extends
 
     @Query("select (count(u.username) = 0) from User u where u.username = ?")
     boolean isUsernameAvailable(String username);
-
-    @Query("select p from Product p where p.id in (select distinct(inde.product.id) from InvoiceDetail inde, Invoice inv where inde.invoice.id = inv.id and inv.customer.id = ?)")
-    Page<Product> listPurchasedProduct(String userId, Pageable pageable);
 }

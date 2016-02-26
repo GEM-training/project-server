@@ -10,7 +10,7 @@ public class Company {
     @Id
     @SequenceGenerator(name = "company_id_seq", sequenceName = "company_seq_id", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "company_id_seq")
-    @Column(name = "company_id", nullable = false, unique = true)
+    @Column(name = "id", nullable = false, unique = true)
     private long id;
 
     @Column(name = "name", nullable = false)
