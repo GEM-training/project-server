@@ -6,10 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
-/**
- * Created by kimtung on 2/24/16.
- */
+@Repository
 public interface ProductRepository extends PagingAndSortingRepository<Product, Long>, QueryDslPredicateExecutor<Product> {
 
     @Query("select p from Product p where p.id in (select ps.product.id from ProductStore ps where ps.store.id = ?1)")

@@ -10,9 +10,9 @@ import org.springframework.data.domain.Pageable;
  * Created by kimtung on 2/24/16.
  */
 public interface StoreService extends AbstractService<StoreDTO, Long> {
-    Page<UserDTO> listStaffs(Long storeId, Pageable pageable) throws Exception;
-    Page<ProductDTO> listProducts(Long storeId, Pageable pageable) throws Exception;
-    Page<UserDTO> listCustomers(Long storeId, Pageable pageable) throws Exception;
-    void assignStaff(Long storeId, String userId) throws Exception;
-    void assignProduct(Long storeId, Long productId) throws Exception;
+    Page<UserDTO> listStaffs(Long storeId, Pageable pageable);
+    Page<ProductDTO> listProducts(Long storeId, Pageable pageable);
+    Page<UserDTO> listCustomers(Long storeId, Pageable pageable);
+    void assignStaff(Long storeId, String userId);
+    void assignProduct(Long storeId, Long productId);
 }

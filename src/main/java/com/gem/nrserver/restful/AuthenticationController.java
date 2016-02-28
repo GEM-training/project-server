@@ -29,12 +29,12 @@ public class AuthenticationController {
         userService.create(userDTO);
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public UserCredential login(@RequestBody UserCredential userCredential) throws Exception {
         return authenticationService.authenticate(userCredential.getUsername(), userCredential.getPassword(), userCredential.getDeviceId());
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET,produces = "application/json")
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public void logout(HttpServletRequest request) {
         authenticationService.deauthenticate(request.getHeader("token"));
     }

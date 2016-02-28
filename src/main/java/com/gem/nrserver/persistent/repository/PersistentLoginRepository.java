@@ -5,10 +5,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-/**
- * Created by kimtung on 2/17/16.
- */
+@Repository
 public interface PersistentLoginRepository extends CrudRepository<PersistentLogin, String>, QueryDslPredicateExecutor<PersistentLogin> {
     @Query("select p.token from PersistentLogin p where p.username = ?1 and p.deviceId = ?2")
     String getToken(String username, String deviceId);

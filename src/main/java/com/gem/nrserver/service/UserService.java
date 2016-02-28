@@ -11,5 +11,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserService extends AbstractService<UserDTO, String> {
     boolean isUsernameAvailable(String username);
-    Page<ProductDTO> listPurchasedProduct(String userId, Pageable pageable) throws Exception;
+    Page<ProductDTO> listPurchasedProduct(String userId, Pageable pageable);
 }

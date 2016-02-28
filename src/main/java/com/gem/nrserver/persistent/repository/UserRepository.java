@@ -4,10 +4,9 @@ import com.gem.nrserver.persistent.model.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Repository;
 
-/**
- * Created by kimtung on 2/26/16.
- */
+@Repository
 public interface UserRepository extends QueryDslPredicateExecutor<User>, PagingAndSortingRepository<User, String>{
 
     @Query("select (count(u.username) = 0) from User u where u.username = ?1")

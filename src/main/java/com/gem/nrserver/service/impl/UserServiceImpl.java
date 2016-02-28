@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Page<ProductDTO> listPurchasedProduct(String userId, Pageable pageable) throws Exception{
+    public Page<ProductDTO> listPurchasedProduct(String userId, Pageable pageable) {
         Predicate predicate = QProduct.product
                 .in(new JPASubQuery().distinct()
                         .from(QInvoice.invoice,QInvoiceDetail.invoiceDetail)
