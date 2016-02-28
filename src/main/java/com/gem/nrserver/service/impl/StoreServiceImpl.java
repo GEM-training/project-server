@@ -1,14 +1,21 @@
 package com.gem.nrserver.service.impl;
 
+import com.gem.nrserver.persistent.model.QInvoice;
+import com.gem.nrserver.persistent.model.QUser;
 import com.gem.nrserver.persistent.model.Store;
+import com.gem.nrserver.persistent.model.User;
 import com.gem.nrserver.persistent.repository.ProductRepository;
 import com.gem.nrserver.persistent.repository.StoreRepository;
+import com.gem.nrserver.persistent.repository.UserRepository;
 import com.gem.nrserver.service.StoreService;
 import com.gem.nrserver.service.dto.ProductDTO;
 import com.gem.nrserver.service.dto.StoreDTO;
 import com.gem.nrserver.service.dto.UserDTO;
 import com.gem.nrserver.service.exception.ResourceNotFoundException;
 import com.gem.nrserver.service.exception.StoreNotFoundException;
+import com.mysema.query.jpa.JPASubQuery;
+import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.BooleanExpression;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,10 +33,19 @@ public class StoreServiceImpl implements StoreService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
 
     @Override
     public Page<UserDTO> listStaffs(Long storeId, Pageable pageable) {
-        return null;
+        BooleanExpression isStaff = QUser.user.store.id.eq(storeId);
+        Page<User> staffs = userRepository.findAll(isStaff, pageable);
+        return staffs.map(source -> {
+            UserDTO dto = new UserDTO();
+            dto.setUsername(source.getUsername());
+            return dto;
+        });
     }
 
     @Override
@@ -43,7 +59,13 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Page<UserDTO> listCustomers(Long storeId, Pageable pageable) {
-        return null;
+       Predicate isCustomer = QUser.user.in(new JPASubQuery().distinct().
+               from(QInvoice.invoice).where(QInvoice.invoice.store.id.eq(storeId)).list(QInvoice.invoice.customer));
+        return userRepository.findAll(isCustomer, pageable).map(source -> {
+            UserDTO dto = new UserDTO();
+            dto.setUsername(source.getUsername());
+            return dto;
+        });
     }
 
     @Override
