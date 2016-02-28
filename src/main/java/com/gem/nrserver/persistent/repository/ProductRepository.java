@@ -12,9 +12,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface ProductRepository extends PagingAndSortingRepository<Product, Long>, QueryDslPredicateExecutor<Product> {
 
-    @Query("select p from Product p where p.id in (select ps.product.id from ProductStore ps where ps.store.id = ?)")
+    @Query("select p from Product p where p.id in (select ps.product.id from ProductStore ps where ps.store.id = ?1)")
     Page<Product> listProductsInStore(Long storeId, Pageable pageable);
 
-    @Query("select p from Product p where p.id in (select distinct(inde.product.id) from InvoiceDetail inde, Invoice inv where inde.invoice.id = inv.id and inv.customer.id = ?)")
+    @Query("select p from Product p where p.id in (select distinct(inde.product.id) from InvoiceDetail inde, Invoice inv where inde.invoice.id = inv.id and inv.customer.id = ?1)")
     Page<Product> listProductPurchasedByUser(String userId, Pageable pageable);
 }

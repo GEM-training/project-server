@@ -10,6 +10,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface UserRepository extends QueryDslPredicateExecutor<User>, PagingAndSortingRepository<User, String>{
 
-    @Query("select (count(u.username) = 0) from User u where u.username = ?")
+    @Query("select (count(u.username) = 0) from User u where u.username = ?1")
     boolean isUsernameAvailable(String username);
 }
