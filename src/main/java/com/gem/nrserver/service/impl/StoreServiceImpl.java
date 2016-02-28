@@ -38,18 +38,22 @@ public class StoreServiceImpl implements StoreService {
 
 
     @Override
-    public Page<UserDTO> listStaffs(Long storeId, Pageable pageable) {
+    public Page<UserDTO> listStaffs(Long storeId, Pageable pageable) throws StoreNotFoundException {
+        if(!storeRepository.exists(storeId))
+            throw new StoreNotFoundException();
         BooleanExpression isStaff = QUser.user.store.id.eq(storeId);
         Page<User> staffs = userRepository.findAll(isStaff, pageable);
         return staffs.map(source -> {
             UserDTO dto = new UserDTO();
-            dto.setUsername(source.getUsername());
+            BeanUtils.copyProperties(source, dto);
             return dto;
         });
     }
 
     @Override
-    public Page<ProductDTO> listProducts(Long storeId, Pageable pageable) {
+    public Page<ProductDTO> listProducts(Long storeId, Pageable pageable) throws StoreNotFoundException {
+        if(!storeRepository.exists(storeId))
+            throw new StoreNotFoundException();
         return productRepository.listProductsInStore(storeId, pageable).map(source -> {
             ProductDTO dto = new ProductDTO();
             BeanUtils.copyProperties(source, dto);
@@ -58,12 +62,14 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Page<UserDTO> listCustomers(Long storeId, Pageable pageable) {
+    public Page<UserDTO> listCustomers(Long storeId, Pageable pageable) throws StoreNotFoundException {
+        if(!storeRepository.exists(storeId))
+            throw new StoreNotFoundException();
        Predicate isCustomer = QUser.user.in(new JPASubQuery().distinct().
                from(QInvoice.invoice).where(QInvoice.invoice.store.id.eq(storeId)).list(QInvoice.invoice.customer));
         return userRepository.findAll(isCustomer, pageable).map(source -> {
             UserDTO dto = new UserDTO();
-            dto.setUsername(source.getUsername());
+            BeanUtils.copyProperties(source, dto);
             return dto;
         });
     }
@@ -96,10 +102,10 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public void update(StoreDTO dto) {
+    public void update(StoreDTO dto) throws StoreNotFoundException {
         Store store = storeRepository.findOne(dto.getId());
-        store.setName(dto.getName());
-        store.setDescription(dto.getDescription());
+        if(store == null) throw new StoreNotFoundException();
+        BeanUtils.copyProperties(store, dto);
         storeRepository.save(store);
     }
 

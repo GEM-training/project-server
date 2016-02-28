@@ -30,7 +30,7 @@ public class QInvoice extends EntityPathBase<Invoice> {
 
     public final SetPath<InvoiceDetail, QInvoiceDetail> invoiceDetails = this.<InvoiceDetail, QInvoiceDetail>createSet("invoiceDetails", InvoiceDetail.class, QInvoiceDetail.class, PathInits.DIRECT2);
 
-    public final StringPath status = createString("status");
+    public final EnumPath<Invoice.Status> status = createEnum("status", Invoice.Status.class);
 
     public final QStore store;
 

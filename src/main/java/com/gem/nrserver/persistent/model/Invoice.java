@@ -7,14 +7,20 @@ import java.util.Set;
 @Entity
 @Table(name = "invoice")
 public class Invoice {
+
+    public enum Status {
+        PENDING, PAID
+    }
+
     @Id
     @SequenceGenerator(name = "invoice_id_seq", sequenceName = "invoice_id_seq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoice_id_seq")
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private Status status;
 
     @Column(name = "created_date")
     private Date createdDate;
@@ -42,11 +48,11 @@ public class Invoice {
         this.id = id;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

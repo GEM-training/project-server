@@ -38,8 +38,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void update(ProductDTO dto) {
+    public void update(ProductDTO dto) throws ProductNotFoundException {
         Product product = productRepository.findOne(dto.getId());
+        if(product == null)
+            throw new ProductNotFoundException();
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
         productRepository.save(product);
