@@ -8,8 +8,8 @@ import java.util.List;
 public class InvoiceDTO {
     private Long id;
     private Invoice.Status status;
-    private StoreDTO store;
-    private UserDTO customer;
+    private String storeId;
+    private String customerId;
     private Date createdDate;
     private Date updatedDate;
     private List<Detail> invoiceDetails;
@@ -28,22 +28,6 @@ public class InvoiceDTO {
 
     public void setStatus(Invoice.Status status) {
         this.status = status;
-    }
-
-    public StoreDTO getStore() {
-        return store;
-    }
-
-    public void setStore(StoreDTO store) {
-        this.store = store;
-    }
-
-    public UserDTO getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(UserDTO customer) {
-        this.customer = customer;
     }
 
     public Date getCreatedDate() {

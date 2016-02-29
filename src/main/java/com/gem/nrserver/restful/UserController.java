@@ -1,6 +1,7 @@
 package com.gem.nrserver.restful;
 
 import com.gem.nrserver.service.UserService;
+import com.gem.nrserver.service.dto.InvoiceDTO;
 import com.gem.nrserver.service.dto.ProductDTO;
 import com.gem.nrserver.service.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}/product", method = RequestMethod.GET, produces = "application/json")
-    public Page<ProductDTO> listPurchasedProduct(@PathVariable(value = "id") String userId, Pageable pageable) throws Exception {
+    public Page<ProductDTO> listPurchasedProducts(@PathVariable(value = "id") String userId, Pageable pageable) throws Exception {
         return userService.listPurchasedProducts(userId, pageable);
+    }
+
+    @RequestMapping(value = "/{id}/invoice", method = RequestMethod.GET, produces = "application/json")
+    public Page<InvoiceDTO> listInvoices(@PathVariable(value = "id") String userId, Pageable pageable) throws Exception {
+        return userService.listInvoices(userId, pageable);
     }
 
 }
