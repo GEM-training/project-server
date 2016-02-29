@@ -65,6 +65,23 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    public Page<ProductDTO> listProducts(Long storeId, Date from, Date to, Pageable pageable) throws StoreNotFoundException {
+        if(!storeRepository.exists(storeId))
+            throw new StoreNotFoundException();
+        Predicate predicate = QProduct.product.in(new JPASubQuery().distinct()
+                .from(QInvoice.invoice, QInvoiceDetail.invoiceDetail)
+                .where(QInvoice.invoice.eq(QInvoiceDetail.invoiceDetail.invoice)
+                        .and(QInvoice.invoice.store.id.eq(storeId))
+                        .and(QInvoice.invoice.createdDate.between(from, to)))
+                .list(QInvoiceDetail.invoiceDetail.product));
+        return storeRepository.findAll(predicate, pageable).map(source -> {
+            ProductDTO dto = new ProductDTO();
+            BeanUtils.copyProperties(source, dto);
+            return dto;
+        });
+    }
+
+    @Override
     public Page<UserDTO> listCustomers(Long storeId, Pageable pageable) throws StoreNotFoundException {
         if(!storeRepository.exists(storeId))
             throw new StoreNotFoundException();

@@ -13,6 +13,7 @@ import java.util.Date;
 public interface StoreService extends AbstractService<StoreDTO, Long> {
     Page<UserDTO> listStaffs(Long storeId, Pageable pageable) throws StoreNotFoundException;
     Page<ProductDTO> listProducts(Long storeId, Pageable pageable) throws StoreNotFoundException;
+    Page<ProductDTO> listProducts(Long storeId, Date from, Date to, Pageable pageable) throws StoreNotFoundException;
     Page<UserDTO> listCustomers(Long storeId, Pageable pageable) throws StoreNotFoundException;
     Page<UserDTO> listCustomers(Long storeId, Date from, Date to, Pageable pageable) throws StoreNotFoundException;
     Page<InvoiceDTO> listInvoices(Long storeId, Pageable pageable) throws StoreNotFoundException;

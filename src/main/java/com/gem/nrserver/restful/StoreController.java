@@ -58,8 +58,18 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/{id}/product", method = RequestMethod.GET, produces = "application/json")
-    public Page<ProductDTO> listProducts(@PathVariable(value = "id") Long storeId, Pageable pageable) throws Exception {
-        return storeService.listProducts(storeId, pageable);
+    public Page<ProductDTO> listProducts(@PathVariable(value = "id") Long storeId,
+                                         @RequestParam(name = "from") @DateTimeFormat(pattern = "yyyy-mm-dd") Date from,
+                                         @RequestParam(name = "to") @DateTimeFormat(pattern = "yyyy-mm-dd") Date to,
+                                         Pageable pageable) throws Exception {
+        if(from == null) {
+            return storeService.listProducts(storeId, pageable);
+        } else {
+            if(to == null) {
+                to = new Date();
+            }
+            return storeService.listProducts(storeId, from, to, pageable);
+        }
     }
 
     @RequestMapping(value = "/{id}/product", method = RequestMethod.POST)
