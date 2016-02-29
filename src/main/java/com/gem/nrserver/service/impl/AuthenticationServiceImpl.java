@@ -1,9 +1,6 @@
 package com.gem.nrserver.service.impl;
 
-import com.gem.nrserver.persistent.model.PersistentLogin;
-import com.gem.nrserver.persistent.model.QPersistentLogin;
-import com.gem.nrserver.persistent.model.QUser;
-import com.gem.nrserver.persistent.model.User;
+import com.gem.nrserver.persistent.model.*;
 import com.gem.nrserver.persistent.repository.PersistentLoginRepository;
 import com.gem.nrserver.persistent.repository.UserRepository;
 import com.gem.nrserver.service.AuthenticationService;
@@ -17,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -39,6 +38,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         UserCredential userCredential = new UserCredential();
         userCredential.setUsername(username);
         userCredential.setDeviceId(deviceId);
+        ArrayList<String> roles = user.getRoles().stream().map(UserRole::getRole).collect(Collectors.toCollection(ArrayList::new));
+        userCredential.setRoles(roles);
         String token = persistentLoginRepository.getToken(username, deviceId);
         if(token != null) {
             userCredential.setToken(token);
@@ -72,6 +73,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userCredential.setUsername(pLogin.getUsername());
         userCredential.setToken(token);
         userCredential.setDeviceId(deviceId);
+        ArrayList<String> roles = userRepository.findOne(pLogin.getUsername())
+                .getRoles().stream().map(UserRole::getRole).collect(Collectors.toCollection(ArrayList::new));
+        userCredential.setRoles(roles);
         return userCredential;
     }
 
