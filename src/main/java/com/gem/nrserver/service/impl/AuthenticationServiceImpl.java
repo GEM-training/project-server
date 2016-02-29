@@ -7,7 +7,8 @@ import com.gem.nrserver.service.AuthenticationService;
 import com.gem.nrserver.service.dto.UserCredential;
 import com.mysema.query.types.expr.BooleanExpression;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private static final Logger log = Logger.getLogger(AuthenticationServiceImpl.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceImpl.class.getName());
 
     @Autowired
     private PersistentLoginRepository persistentLoginRepository;
@@ -59,6 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             } while (!valid); // re-generate different token if any exception occurs
             userCredential.setToken(token);
         }
+        LOGGER.info("successfully authenticate user " + username);
         return userCredential;
     }
 
@@ -76,12 +78,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         ArrayList<String> roles = userRepository.findOne(pLogin.getUsername())
                 .getRoles().stream().map(UserRole::getRole).collect(Collectors.toCollection(ArrayList::new));
         userCredential.setRoles(roles);
+        LOGGER.info("successfully authenticate user " + userCredential.getUsername());
         return userCredential;
     }
 
     @Override
     public void deauthenticate(String token) {
-        log.info("deauthenticate token " + token);
+        LOGGER.info("deauthenticate token " + token);
         persistentLoginRepository.deleteByToken(token); //delete session token when users logout
     }
 

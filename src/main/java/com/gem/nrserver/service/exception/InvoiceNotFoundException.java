@@ -1,7 +1,12 @@
 package com.gem.nrserver.service.exception;
 
-/**
- * Created by kimtung on 2/28/16.
- */
+
 public class InvoiceNotFoundException extends ResourceNotFoundException {
+
+    public InvoiceNotFoundException() {
+    }
+
+    public InvoiceNotFoundException(String message) {
+        super(message);
+    }
 }

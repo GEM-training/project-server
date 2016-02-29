@@ -43,7 +43,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Page<UserDTO> listStaffs(Long storeId, Pageable pageable) throws StoreNotFoundException {
         if(!storeRepository.exists(storeId))
-            throw new StoreNotFoundException();
+            throw new StoreNotFoundException("could not find store " + storeId);
         BooleanExpression isStaff = QUser.user.store.id.eq(storeId);
         Page<User> staffs = userRepository.findAll(isStaff, pageable);
         return staffs.map(source -> {
@@ -56,7 +56,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Page<ProductDTO> listProducts(Long storeId, Pageable pageable) throws StoreNotFoundException {
         if(!storeRepository.exists(storeId))
-            throw new StoreNotFoundException();
+            throw new StoreNotFoundException("could not find store " + storeId);
         return productRepository.listProductsInStore(storeId, pageable).map(source -> {
             ProductDTO dto = new ProductDTO();
             BeanUtils.copyProperties(source, dto);
@@ -67,7 +67,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Page<ProductDTO> listProducts(Long storeId, Date from, Date to, Pageable pageable) throws StoreNotFoundException {
         if(!storeRepository.exists(storeId))
-            throw new StoreNotFoundException();
+            throw new StoreNotFoundException("could not find store " + storeId);
         Predicate predicate = QProduct.product.in(new JPASubQuery().distinct()
                 .from(QInvoice.invoice, QInvoiceDetail.invoiceDetail)
                 .where(QInvoice.invoice.eq(QInvoiceDetail.invoiceDetail.invoice)
@@ -84,7 +84,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Page<UserDTO> listCustomers(Long storeId, Pageable pageable) throws StoreNotFoundException {
         if(!storeRepository.exists(storeId))
-            throw new StoreNotFoundException();
+            throw new StoreNotFoundException("could not find store " + storeId);
        Predicate isCustomer = QUser.user.in(new JPASubQuery().distinct().
                from(QInvoice.invoice).where(QInvoice.invoice.store.id.eq(storeId)).list(QInvoice.invoice.customer));
         return userRepository.findAll(isCustomer, pageable).map(source -> {
@@ -97,7 +97,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Page<UserDTO> listCustomers(Long storeId, Date from, Date to, Pageable pageable) throws StoreNotFoundException {
         if(!storeRepository.exists(storeId))
-            throw new StoreNotFoundException();
+            throw new StoreNotFoundException("could not find store " + storeId);
         Predicate isCustomer = QUser.user.in(new JPASubQuery().distinct().
                 from(QInvoice.invoice)
                 .where(QInvoice.invoice.store.id.eq(storeId).and(QInvoice.invoice.createdDate.between(from, to)))
@@ -112,7 +112,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Page<InvoiceDTO> listInvoices(Long storeId, Pageable pageable) throws StoreNotFoundException {
         if(!storeRepository.exists(storeId))
-            throw new StoreNotFoundException();
+            throw new StoreNotFoundException("could not find store " + storeId);
         Predicate isInvoice = QInvoice.invoice.store.id.eq(storeId);
         return invoiceRepository.findAll(isInvoice, pageable).map(source -> {
             InvoiceDTO dto = new InvoiceDTO();
@@ -124,7 +124,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Page<InvoiceDTO> listInvoices(Long storeId, Date from, Date to, Pageable pageable) throws StoreNotFoundException {
         if(!storeRepository.exists(storeId))
-            throw new StoreNotFoundException();
+            throw new StoreNotFoundException("could not find store " + storeId);
         Predicate isInvoice = QInvoice.invoice.store.id.eq(storeId).and(QInvoice.invoice.createdDate.between(from, to));
         return invoiceRepository.findAll(isInvoice, pageable).map(source -> {
             InvoiceDTO dto = new InvoiceDTO();
@@ -163,7 +163,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public void update(StoreDTO dto) throws StoreNotFoundException {
         Store store = storeRepository.findOne(dto.getId());
-        if(store == null) throw new StoreNotFoundException();
+        if(store == null) throw new StoreNotFoundException("could not find store " + dto.getId());
         BeanUtils.copyProperties(store, dto);
         storeRepository.save(store);
     }
@@ -171,7 +171,7 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public StoreDTO findOne(Long id) throws ResourceNotFoundException {
         Store store = storeRepository.findOne(id);
-        if(store == null) throw new StoreNotFoundException();
+        if(store == null) throw new StoreNotFoundException("could not find store " + id);
         StoreDTO dto = new StoreDTO();
         BeanUtils.copyProperties(store, dto);
         return dto;

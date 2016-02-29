@@ -11,7 +11,6 @@ import com.gem.nrserver.service.dto.UserDTO;
 import com.gem.nrserver.service.exception.UserNotFoundException;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.types.Predicate;
-import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,8 +32,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private static Logger log = Logger.getLogger(UserServiceImpl.class.getName());
-
     @Autowired
     private UserRepository userRepository;
 
@@ -50,7 +47,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Page<ProductDTO> listPurchasedProducts(String userId, Pageable pageable) {
+    public Page<ProductDTO> listPurchasedProducts(String userId, Pageable pageable) throws UserNotFoundException {
+        if(!userRepository.exists(userId))
+            throw new UserNotFoundException("could not find user " + userId);
         Predicate predicate = QProduct.product
                 .in(new JPASubQuery().distinct()
                         .from(QInvoice.invoice,QInvoiceDetail.invoiceDetail)
@@ -65,7 +64,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Page<InvoiceDTO> listInvoices(String userId, Pageable pageable) {
+    public Page<InvoiceDTO> listInvoices(String userId, Pageable pageable) throws UserNotFoundException {
+        if(!userRepository.exists(userId))
+            throw new UserNotFoundException("could not find user " + userId);
         Predicate isInvoice = QInvoice.invoice.customer.username.eq(userId);
         return invoiceRepository.findAll(isInvoice, pageable).map(source -> {
             InvoiceDTO dto = new InvoiceDTO();
@@ -117,10 +118,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDTO findOne(String id) throws Exception {
-        User user = userRepository.findOne(id);
-        if(user == null) throw new UserNotFoundException();
+        if(!userRepository.exists(id))
+            throw new UserNotFoundException("could not find user " + id);
         UserDTO dto = new UserDTO();
-        BeanUtils.copyProperties(user, dto);
+        BeanUtils.copyProperties(userRepository.findOne(id), dto);
         return dto;
     }
 

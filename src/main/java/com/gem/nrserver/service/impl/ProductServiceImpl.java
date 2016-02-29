@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
     public void update(ProductDTO dto) throws ProductNotFoundException {
         Product product = productRepository.findOne(dto.getId());
         if(product == null)
-            throw new ProductNotFoundException();
+            throw new ProductNotFoundException("could not find product " + dto.getId());
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
         productRepository.save(product);
@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO findOne(Long id) throws ProductNotFoundException {
         Product product = productRepository.findOne(id);
-        if(product == null) throw new ProductNotFoundException();
+        if(product == null) throw new ProductNotFoundException("could not find product " + id);
         ProductDTO dto = new ProductDTO();
         BeanUtils.copyProperties(product, dto);
         return dto;

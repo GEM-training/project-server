@@ -45,7 +45,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public InvoiceDTO findOne(Long id) throws Exception {
         Invoice invoice = invoiceRepository.findOne(id);
-        if(invoice == null) throw new InvoiceNotFoundException();
+        if(invoice == null) throw new InvoiceNotFoundException("could not find invoice " + id);
         InvoiceDTO dto = new InvoiceDTO();
         BeanUtils.copyProperties(invoice, dto);
         return dto;
