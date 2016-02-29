@@ -22,15 +22,13 @@ public class QInvoiceDetail extends EntityPathBase<InvoiceDetail> {
 
     public static final QInvoiceDetail invoiceDetail = new QInvoiceDetail("invoiceDetail");
 
-    public final DateTimePath<java.util.Date> createdDate = createDateTime("createdDate", java.util.Date.class);
-
     public final QInvoice invoice;
+
+    public final NumberPath<Double> priceEach = createNumber("priceEach", Double.class);
 
     public final QProduct product;
 
     public final NumberPath<Integer> quantity = createNumber("quantity", Integer.class);
-
-    public final DateTimePath<java.util.Date> updatedDate = createDateTime("updatedDate", java.util.Date.class);
 
     public QInvoiceDetail(String variable) {
         this(InvoiceDetail.class, forVariable(variable), INITS);

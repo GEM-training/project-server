@@ -14,9 +14,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
-/**
- * Created by kimtung on 2/19/16.
- */
 @Configuration
 @EnableTransactionManagement
 @EnableSpringDataWebSupport

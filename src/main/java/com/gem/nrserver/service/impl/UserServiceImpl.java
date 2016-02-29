@@ -1,9 +1,11 @@
 package com.gem.nrserver.service.impl;
 
 import com.gem.nrserver.persistent.model.*;
+import com.gem.nrserver.persistent.repository.InvoiceRepository;
 import com.gem.nrserver.persistent.repository.ProductRepository;
 import com.gem.nrserver.persistent.repository.UserRepository;
 import com.gem.nrserver.service.UserService;
+import com.gem.nrserver.service.dto.InvoiceDTO;
 import com.gem.nrserver.service.dto.ProductDTO;
 import com.gem.nrserver.service.dto.UserDTO;
 import com.gem.nrserver.service.exception.UserNotFoundException;
@@ -39,13 +41,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private InvoiceRepository invoiceRepository;
+
     @Override
     public boolean isUsernameAvailable(String username) {
         return userRepository.isUsernameAvailable(username);
     }
 
     @Override
-    public Page<ProductDTO> listPurchasedProduct(String userId, Pageable pageable) {
+    public Page<ProductDTO> listPurchasedProducts(String userId, Pageable pageable) {
         Predicate predicate = QProduct.product
                 .in(new JPASubQuery().distinct()
                         .from(QInvoice.invoice,QInvoiceDetail.invoiceDetail)
@@ -54,6 +59,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                         .list(QInvoiceDetail.invoiceDetail.product));
         return productRepository.findAll(predicate, pageable).map(source -> {
             ProductDTO dto = new ProductDTO();
+            BeanUtils.copyProperties(source, dto);
+            return dto;
+        });
+    }
+
+    @Override
+    public Page<InvoiceDTO> listInvoices(String userId, Pageable pageable) {
+        Predicate isInvoice = QInvoice.invoice.customer.username.eq(userId);
+        return invoiceRepository.findAll(isInvoice, pageable).map(source -> {
+            InvoiceDTO dto = new InvoiceDTO();
             BeanUtils.copyProperties(source, dto);
             return dto;
         });

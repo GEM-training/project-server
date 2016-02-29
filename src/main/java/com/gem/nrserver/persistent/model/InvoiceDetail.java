@@ -20,14 +20,19 @@ public class InvoiceDetail {
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
 
-    @Column(name = "quantity")
-    private int quantity;
+    @Column(name = "quantity", nullable = false)
+    private int quantity = 0;
 
-    @Column(name = "created_date")
-    private Date createdDate;
+    @Column(name = "price_each", nullable = false)
+    private double priceEach = 0;
 
-    @Column(name = "updated_date")
-    private Date updatedDate;
+    public double getPriceEach() {
+        return priceEach;
+    }
+
+    public void setPriceEach(double priceEach) {
+        this.priceEach = priceEach;
+    }
 
     public Product getProduct() {
         return product;
@@ -51,22 +56,6 @@ public class InvoiceDetail {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
     }
 
     @Embeddable

@@ -35,7 +35,7 @@ public class UserController {
 
     @RequestMapping(value = "/{id}/product", method = RequestMethod.GET, produces = "application/json")
     public Page<ProductDTO> listPurchasedProduct(@PathVariable(value = "id") String userId, Pageable pageable) throws Exception {
-        return userService.listPurchasedProduct(userId, pageable);
+        return userService.listPurchasedProducts(userId, pageable);
     }
 
 }

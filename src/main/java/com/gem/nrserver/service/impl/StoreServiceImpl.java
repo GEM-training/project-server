@@ -1,13 +1,12 @@
 package com.gem.nrserver.service.impl;
 
-import com.gem.nrserver.persistent.model.QInvoice;
-import com.gem.nrserver.persistent.model.QUser;
-import com.gem.nrserver.persistent.model.Store;
-import com.gem.nrserver.persistent.model.User;
+import com.gem.nrserver.persistent.model.*;
+import com.gem.nrserver.persistent.repository.InvoiceRepository;
 import com.gem.nrserver.persistent.repository.ProductRepository;
 import com.gem.nrserver.persistent.repository.StoreRepository;
 import com.gem.nrserver.persistent.repository.UserRepository;
 import com.gem.nrserver.service.StoreService;
+import com.gem.nrserver.service.dto.InvoiceDTO;
 import com.gem.nrserver.service.dto.ProductDTO;
 import com.gem.nrserver.service.dto.StoreDTO;
 import com.gem.nrserver.service.dto.UserDTO;
@@ -23,6 +22,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Service
 @Transactional
 public class StoreServiceImpl implements StoreService {
@@ -36,6 +37,8 @@ public class StoreServiceImpl implements StoreService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
     @Override
     public Page<UserDTO> listStaffs(Long storeId, Pageable pageable) throws StoreNotFoundException {
@@ -69,6 +72,45 @@ public class StoreServiceImpl implements StoreService {
                from(QInvoice.invoice).where(QInvoice.invoice.store.id.eq(storeId)).list(QInvoice.invoice.customer));
         return userRepository.findAll(isCustomer, pageable).map(source -> {
             UserDTO dto = new UserDTO();
+            BeanUtils.copyProperties(source, dto);
+            return dto;
+        });
+    }
+
+    @Override
+    public Page<UserDTO> listCustomers(Long storeId, Date from, Date to, Pageable pageable) throws StoreNotFoundException {
+        if(!storeRepository.exists(storeId))
+            throw new StoreNotFoundException();
+        Predicate isCustomer = QUser.user.in(new JPASubQuery().distinct().
+                from(QInvoice.invoice)
+                .where(QInvoice.invoice.store.id.eq(storeId).and(QInvoice.invoice.createdDate.between(from, to)))
+                .list(QInvoice.invoice.customer));
+        return userRepository.findAll(isCustomer, pageable).map(source -> {
+            UserDTO dto = new UserDTO();
+            BeanUtils.copyProperties(source, dto);
+            return dto;
+        });
+    }
+
+    @Override
+    public Page<InvoiceDTO> listInvoices(Long storeId, Pageable pageable) throws StoreNotFoundException {
+        if(!storeRepository.exists(storeId))
+            throw new StoreNotFoundException();
+        Predicate isInvoice = QInvoice.invoice.store.id.eq(storeId);
+        return invoiceRepository.findAll(isInvoice, pageable).map(source -> {
+            InvoiceDTO dto = new InvoiceDTO();
+            BeanUtils.copyProperties(source, dto);
+            return dto;
+        });
+    }
+
+    @Override
+    public Page<InvoiceDTO> listInvoices(Long storeId, Date from, Date to, Pageable pageable) throws StoreNotFoundException {
+        if(!storeRepository.exists(storeId))
+            throw new StoreNotFoundException();
+        Predicate isInvoice = QInvoice.invoice.store.id.eq(storeId).and(QInvoice.invoice.createdDate.between(from, to));
+        return invoiceRepository.findAll(isInvoice, pageable).map(source -> {
+            InvoiceDTO dto = new InvoiceDTO();
             BeanUtils.copyProperties(source, dto);
             return dto;
         });

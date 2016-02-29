@@ -1,13 +1,17 @@
 package com.gem.nrserver.restful;
 
 import com.gem.nrserver.service.StoreService;
+import com.gem.nrserver.service.dto.InvoiceDTO;
 import com.gem.nrserver.service.dto.ProductDTO;
 import com.gem.nrserver.service.dto.StoreDTO;
 import com.gem.nrserver.service.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 
 @RestController
@@ -65,8 +69,33 @@ public class StoreController {
     }
 
     @RequestMapping(value = "/{id}/customer", method = RequestMethod.GET, produces = "application/json")
-    public Page<UserDTO> listCustomers(@PathVariable(value = "id") Long storeId, Pageable pageable) throws Exception {
-        return storeService.listCustomers(storeId, pageable);
+    public Page<UserDTO> listCustomers(@PathVariable(value = "id") Long storeId,
+                                       @RequestParam(name = "from") @DateTimeFormat(pattern = "yyyy-mm-dd") Date from,
+                                       @RequestParam(name = "to") @DateTimeFormat(pattern = "yyyy-mm-dd") Date to,
+                                       Pageable pageable) throws Exception {
+        if(from == null) {
+            return storeService.listCustomers(storeId, pageable);
+        } else {
+            if(to == null) {
+                to = new Date();
+            }
+            return storeService.listCustomers(storeId, from, to, pageable);
+        }
+    }
+
+    @RequestMapping(value = "/{id}/invoice", method = RequestMethod.GET, produces = "application/json")
+    public Page<InvoiceDTO> listInvoices(@PathVariable(value = "id") Long storeId,
+                                         @RequestParam(name = "from") @DateTimeFormat(pattern = "yyyy-mm-dd") Date from,
+                                         @RequestParam(name = "to") @DateTimeFormat(pattern = "yyyy-mm-dd") Date to,
+                                         Pageable pageable) throws Exception {
+        if(from == null) {
+            return storeService.listInvoices(storeId, pageable);
+        } else {
+            if(to == null) {
+                to = new Date();
+            }
+            return storeService.listInvoices(storeId, from, to, pageable);
+        }
     }
 
 }
