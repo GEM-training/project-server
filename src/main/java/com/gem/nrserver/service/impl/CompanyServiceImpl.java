@@ -1,20 +1,20 @@
 package com.gem.nrserver.service.impl;
 
 import com.gem.nrserver.persistent.model.Company;
-import com.gem.nrserver.persistent.model.QCompany;
+import com.gem.nrserver.persistent.model.QStore;
 import com.gem.nrserver.persistent.repository.CompanyRepository;
 import com.gem.nrserver.persistent.repository.StoreRepository;
 import com.gem.nrserver.service.CompanyService;
 import com.gem.nrserver.service.dto.CompanyDTO;
 import com.gem.nrserver.service.dto.StoreDTO;
 import com.gem.nrserver.service.exception.CompanyNotFoundException;
+import com.mysema.query.types.Predicate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.mysema.query.types.Predicate;
 
 /**
  * Created by qsoft on 2/29/16.
@@ -78,8 +78,12 @@ public class CompanyServiceImpl implements CompanyService{
     public Page<StoreDTO> listStores(Long companyId, Pageable pageable) throws CompanyNotFoundException {
         if(!companyRepository.exists(companyId))
             throw new CompanyNotFoundException("could not find company" +companyId);
-        Predicate isCompany = QCompany.company.stores
+        Predicate isStore = QStore.store.id.eq(companyId);
+        return storeRepository.findAll(isStore, pageable).map(source -> {
+            StoreDTO dto = new StoreDTO();
+            BeanUtils.copyProperties(source, dto);
+            return dto;
+        });
     }
  }
 
-}
