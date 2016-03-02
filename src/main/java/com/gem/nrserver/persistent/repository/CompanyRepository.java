@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CompanyRepository extends PagingAndSortingRepository<Company, Long>, QueryDslPredicateExecutor<Company> {
+
 }
