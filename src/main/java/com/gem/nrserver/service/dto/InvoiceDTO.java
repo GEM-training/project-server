@@ -5,7 +5,7 @@ import com.gem.nrserver.persistent.model.Invoice;
 import java.util.Date;
 import java.util.List;
 
-public class InvoiceDTO {
+public class InvoiceDTO extends CompanyDTO {
     private Long id;
     private Invoice.Status status;
     private StoreDTO store;
