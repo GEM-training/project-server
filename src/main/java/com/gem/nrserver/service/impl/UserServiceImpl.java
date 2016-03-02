@@ -6,6 +6,7 @@ import com.gem.nrserver.persistent.repository.ProductRepository;
 import com.gem.nrserver.persistent.repository.UserRepository;
 import com.gem.nrserver.service.UserService;
 import com.gem.nrserver.service.dto.InvoiceDTO;
+import com.gem.nrserver.service.dto.InvoiceDetailDTO;
 import com.gem.nrserver.service.dto.ProductDTO;
 import com.gem.nrserver.service.dto.UserDTO;
 import com.gem.nrserver.service.exception.UserNotFoundException;
@@ -71,6 +72,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return invoiceRepository.findAll(isInvoice, pageable).map(source -> {
             InvoiceDTO dto = new InvoiceDTO();
             BeanUtils.copyProperties(source, dto);
+            dto.setCustomerId(source.getCustomer().getUsername());
+            dto.setStoreId(source.getStore().getId());
+            Set<InvoiceDetail> invoiceDetails = source.getInvoiceDetails();
+            List<InvoiceDetailDTO> detailDTOs = new ArrayList<InvoiceDetailDTO>();
+            for(InvoiceDetail detail: invoiceDetails) {
+                InvoiceDetailDTO detailDTO = new InvoiceDetailDTO();
+                BeanUtils.copyProperties(detail, detailDTO);
+                detailDTO.setProductId(detail.getProduct().getId());
+                detailDTOs.add(detailDTO);
+            }
+            dto.setInvoiceDetails(detailDTOs);
             return dto;
         });
     }

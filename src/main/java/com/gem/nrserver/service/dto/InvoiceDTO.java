@@ -8,11 +8,11 @@ import java.util.List;
 public class InvoiceDTO {
     private Long id;
     private Invoice.Status status;
-    private String storeId;
+    private long storeId;
     private String customerId;
     private Date createdDate;
     private Date updatedDate;
-    private List<Detail> invoiceDetails;
+    private List<InvoiceDetailDTO> invoiceDetails;
 
     public Long getId() {
         return id;
@@ -28,6 +28,22 @@ public class InvoiceDTO {
 
     public void setStatus(Invoice.Status status) {
         this.status = status;
+    }
+
+    public long getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(long storeId) {
+        this.storeId = storeId;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 
     public Date getCreatedDate() {
@@ -46,42 +62,11 @@ public class InvoiceDTO {
         this.updatedDate = updatedDate;
     }
 
-    public List<Detail> getInvoiceDetails() {
+    public List<InvoiceDetailDTO> getInvoiceDetails() {
         return invoiceDetails;
     }
 
-    public void setInvoiceDetails(List<Detail> invoiceDetails) {
+    public void setInvoiceDetails(List<InvoiceDetailDTO> invoiceDetails) {
         this.invoiceDetails = invoiceDetails;
-    }
-
-
-    public static class Detail {
-        private ProductDTO product;
-        private int quantity;
-        private double priceEach;
-
-        public ProductDTO getProduct() {
-            return product;
-        }
-
-        public void setProduct(ProductDTO product) {
-            this.product = product;
-        }
-
-        public int getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
-        }
-
-        public double getPriceEach() {
-            return priceEach;
-        }
-
-        public void setPriceEach(double priceEach) {
-            this.priceEach = priceEach;
-        }
     }
 }
