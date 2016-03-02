@@ -6,10 +6,7 @@ import com.gem.nrserver.persistent.repository.ProductRepository;
 import com.gem.nrserver.persistent.repository.StoreRepository;
 import com.gem.nrserver.persistent.repository.UserRepository;
 import com.gem.nrserver.service.StoreService;
-import com.gem.nrserver.service.dto.InvoiceDTO;
-import com.gem.nrserver.service.dto.ProductDTO;
-import com.gem.nrserver.service.dto.StoreDTO;
-import com.gem.nrserver.service.dto.UserDTO;
+import com.gem.nrserver.service.dto.*;
 import com.gem.nrserver.service.exception.ResourceNotFoundException;
 import com.gem.nrserver.service.exception.StoreNotFoundException;
 import com.mysema.query.jpa.JPASubQuery;
@@ -142,6 +139,7 @@ public class StoreServiceImpl implements StoreService {
     public void assignProduct(Long storeId, Long productId) {
 
     }
+
 
     @Override
     public Long count() {
